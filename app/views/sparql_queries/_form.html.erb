@@ -1,0 +1,40 @@
+<%= form_for(@sparql_query) do |f| %>
+  <% if @sparql_query.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@sparql_query.errors.count, "error") %> prohibited this sparql_query from being saved:</h2>
+
+      <ul>
+      <% @sparql_query.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :name %><br />
+    <%= f.text_field :name, class:"form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :query %><br />
+    <%= f.text_area :query, class:"form-control"%>
+  </div>
+  <div class="form-group">
+    <%#= f.label :endpoint %><br />
+    <%#= f.text_field :endpoint, class:"form-control"%>
+  </div>
+  <div class="form-actions">
+    <input name="commit" value="Submit" type="submit" class="btn btn-default btn-block btn-primary">
+  </div>
+<% end %>
+
+<!-- errors relating to $ undefined if this is not up here rather than in body -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
+<%#= javascript_include_tag "jquery" %>
+<%#= javascript_include_tag "bootstrap" %>
+<%#= javascript_include_tag "codemirror" %>
+<%#= javascript_include_tag "codemirror/modes/sparql" %>
+<%#= javascript_include_tag "sparql_queries.form" %>
+
+<%#= stylesheet_link_tag 'codeMirrorHopscotch' %>

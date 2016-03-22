@@ -1,0 +1,11 @@
+//= require jquery
+//= require jquery_ujs
+//= require turbolinks
+//= require bootstrap/js/bootstrap.min
+//= require bootstrap-select/dist/js/bootstrap-select.min
+//= require proj4js
+//= require OpenLayers/OpenLayers
+//= require OpenLayers/OpenLayers.debug
+//= require home/map
+//= require home/queries
+//= require home/eventHandling

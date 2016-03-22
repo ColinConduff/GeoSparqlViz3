@@ -1,0 +1,105 @@
+
+<div>
+
+  <p id="notice"><%= notice %></p>
+
+  <div class="row">
+    <div class="col-xs-3">
+      <%= link_to '<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>'.html_safe + 
+      "Back", sparql_queries_path%> 
+    </div>
+    <div class="col-xs-6 text-center">
+      <h1>Sparql Query Visualizer</h1>
+    </div>
+    <div class="col-xs-3 text-center">
+      <%= link_to '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>'.html_safe, edit_sparql_query_path(@sparql_query), class:"btn btn-info" %>
+    </div>
+    <div class="col-xs-3 text-center">
+          <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+      </button>
+
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title text-center" id="myModalLabel"><%= @sparql_query.name %></h4>
+            </div>
+            <div class="modal-body">
+            
+              <div class="row">
+                <div class="col-xs-2">
+                  Query:
+                </div>
+                <div class="col-xs-10" style="text-align: left">
+                  <textarea><%= @sparql_query.query %></textarea>
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-xs-2">
+                  Endpoint:
+                </div>
+                <div class="col-xs-10 text-center">
+                  <%= @sparql_query.sparqlEndpoint.endpoint %>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-3 text-center">
+          <!-- Button trigger modal -->
+      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal1">
+        <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+      </button>
+
+      <!-- Modal -->
+      <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel"><%= @sparql_query.name %></h4>
+            </div>
+            <div class="modal-body" id='tableWrap'>
+            
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class='bigmap' id='map' style="border:.5em solid black"></div>
+</div>
+
+<%= javascript_include_tag 'manifest/sparqlQueries/general', 'data-turbolinks-track' => false %>
+<%= javascript_include_tag 'manifest/sparqlQueries/showOne', 'data-turbolinks-track' => false %>
+<!-- errors relating to $ undefined if this is not up here rather than in body -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
+<%#= javascript_include_tag "jquery" %>
+<%#= javascript_include_tag "bootstrap" %>
+<%#= javascript_include_tag "proj4js" %>
+<%#= javascript_include_tag "OpenLayers/OpenLayers" %>
+<%#= javascript_include_tag "Openlayers/Openlayers.debug" %>
+<%#= javascript_include_tag "home.queries" %>
+<%#= javascript_include_tag "home.map" %>
+<%#= javascript_include_tag "codemirror" %>
+<%#= javascript_include_tag "codemirror/modes/sparql" %>
+
+
+
