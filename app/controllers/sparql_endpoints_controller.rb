@@ -48,11 +48,11 @@ class SparqlEndpointsController < ApplicationController
   # POST /sparql_endpoints
   # POST /sparql_endpoints.json
   def create
-    @sparql_endpoint = SparqlEndpoint.new(params[:sparql_endpoint])
+    @sparql_endpoint = SparqlEndpoint.new(endpoint_params)
 
     respond_to do |format|
       if @sparql_endpoint.save
-        format.html { redirect_to @sparql_endpoint, notice: 'Sparql query was successfully created.' }
+        format.html { redirect_to sparql_queries_path, notice: 'Sparql query was successfully created.' }
         format.json { render json: @sparql_endpoint, status: :created, location: @sparql_endpoint }
         format.js
       else
@@ -69,7 +69,7 @@ class SparqlEndpointsController < ApplicationController
     @sparql_endpoint = SparqlEndpoint.find(params[:id])
 
     respond_to do |format|
-      if @sparql_endpoint.update_attributes(params[:sparql_endpoint])
+      if @sparql_endpoint.update_attributes(endpoint_params)
         format.html { redirect_to @sparql_endpoint, notice: 'Sparql query was successfully updated.' }
         format.json { head :no_content }
         format.js
@@ -92,5 +92,10 @@ class SparqlEndpointsController < ApplicationController
       format.json { head :no_content }
       format.js
     end
+  end
+
+  private
+  def endpoint_params
+    params.require(:sparql_endpoint).permit(:name, :endpoint)
   end
 end

@@ -13,6 +13,7 @@
 <div class="row text-center">
   <div class="col-sm-6">
     <%= link_to '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>'.html_safe + " New Sparql Query", new_sparql_query_path, class:"btn btn-success"%>
+    <%= link_to '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>'.html_safe + " New Sparql Endpoint", new_sparql_endpoint_path, class:"btn btn-success"%>
     <button type="button" class="btn btn-default" id="starBtn" aria-label="Left Align">
       <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
     </button>
@@ -49,6 +50,10 @@
     <div id="pagination"></div>
   </div>
 </div>
+
+<% SparqlEndpoint.all.each do |sparql_endpoint| %>
+  <h5><%= sparql_endpoint.name %></h5>
+<% end %>
 
 <%= javascript_include_tag 'manifest/sparqlQueries/general', 'data-turbolinks-track' => false %>
 <%= javascript_include_tag 'manifest/sparqlQueries/showAll', 'data-turbolinks-track' => false %>

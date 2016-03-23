@@ -14,3 +14,18 @@
 
 <%= javascript_include_tag 'manifest/sparqlQueries/general', 'data-turbolinks-track' => false %>
 <%= javascript_include_tag 'manifest/sparqlQueries/form', 'data-turbolinks-track' => false %>
+
+<script>
+  $('document').ready(function() { 
+      // $("textarea").each(function() {
+      //   CodeMirror.fromTextArea($(this).get(0), {
+      //     lineNumbers: true,
+      //     theme: "hopscotch",
+      //     mode: "sparql"
+      //   });
+      // });
+    $('#sparql_query_sparql_endpoint_id').addClass('selectpicker');
+    $('.selectpicker').selectpicker({width: '100%', liveSearch: true});
+    $('.selectpicker').selectpicker('refresh');
+  });
+</script>

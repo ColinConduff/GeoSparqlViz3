@@ -20,9 +20,9 @@
     <%= f.text_area :query, class:"form-control"%>
   </div>
   <div class="form-group">
-    <%#= f.label :endpoint %><br />
-    <%#= f.text_field :endpoint, class:"form-control"%>
+    <%= f.collection_select(:sparql_endpoint_id, SparqlEndpoint.all, :id, :name) %>
   </div>
+
   <div class="form-actions">
     <input name="commit" value="Submit" type="submit" class="btn btn-default btn-block btn-primary">
   </div>

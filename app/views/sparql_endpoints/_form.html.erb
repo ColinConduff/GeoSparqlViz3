@@ -1,0 +1,26 @@
+<%= form_for(@sparql_endpoint) do |f| %>
+  <% if @sparql_endpoint.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@sparql_endpoint.errors.count, "error") %> prohibited this sparql_endpoint from being saved:</h2>
+
+      <ul>
+      <% @sparql_endpoint.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :name %><br />
+    <%= f.text_field :name, class:"form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :endpoint %><br />
+    <%= f.text_area :endpoint, class:"form-control"%>
+  </div>
+  
+  <div class="form-actions">
+    <input name="commit" value="Submit" type="submit" class="btn btn-default btn-block btn-primary">
+  </div>
+<% end %>

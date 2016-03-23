@@ -46,7 +46,7 @@ class SparqlQueriesController < ApplicationController
   # POST /sparql_queries
   # POST /sparql_queries.json
   def create
-    @sparql_query = SparqlQuery.new(params[:sparql_query])
+    @sparql_query = SparqlQuery.new(query_params)
 
     respond_to do |format|
       if @sparql_query.save
@@ -67,7 +67,7 @@ class SparqlQueriesController < ApplicationController
     @sparql_query = SparqlQuery.find(params[:id])
 
     respond_to do |format|
-      if @sparql_query.update_attributes(params[:sparql_query])
+      if @sparql_query.update_attributes(query_params)
         format.html { redirect_to @sparql_query, notice: 'Sparql query was successfully updated.' }
         format.json { head :no_content }
         format.js
@@ -90,5 +90,10 @@ class SparqlQueriesController < ApplicationController
       format.json { head :no_content }
       format.js
     end
+  end
+
+  private
+  def query_params
+    params.require(:sparql_query).permit(:name, :query, :sparql_endpoint_id)
   end
 end

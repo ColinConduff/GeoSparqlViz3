@@ -2,6 +2,10 @@
 
 == GeoSparql Visualization Web Application
 
+This is version 3 of GeoSparqlViz.
+
+This version includes user authentication, database/model capability for self-referential sparql queries, individual tables/models for queries and endpoints, etc.  
+
 
 The following documentation coming soon:
 
