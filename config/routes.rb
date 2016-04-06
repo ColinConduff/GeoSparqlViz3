@@ -2,6 +2,10 @@ Rails.application.routes.draw do
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
+  
+  # creates home_path
+  # used by devise after log in
+  get '/home' => 'home#index', as: :home 
 
   # You can have the root of your site routed with "root"
   root to: 'welcome#index'
