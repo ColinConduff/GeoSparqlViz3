@@ -57,9 +57,9 @@ $('document').ready(function() {
   $('#searchBar').keyup(function(){
     var valThis = $(this).val().toLowerCase();
     if(valThis == ""){
-        $('#queryData #queryRow').show();           
+        $('#userQueryData #queryRow').show();           
     } else {
-        $('#queryData #queryRow').each(function(){
+        $('#userQueryData #queryRow').each(function(){
             var text = $(this).text().toLowerCase();
             (text.indexOf(valThis) >= 0) ? $(this).show() : $(this).hide();
         });
@@ -80,7 +80,7 @@ $('document').ready(function() {
       };
     })();
 
-    $("#queryData").children().sortDomElements(function(a,b){
+    $("#userQueryData").children().sortDomElements(function(a,b){
       akey = $(a).attr("updateTime");
       bkey = $(b).attr("updateTime");
 
@@ -104,10 +104,71 @@ $('document').ready(function() {
 
   // set up pagination 
 
-  var items = $("#queryData #queryRow");
+  var items = $("#userQueryData #queryRow");
   var numItems = items.length;
   var perPage = 10;
-  var selector = "#pagination";
+  var selector = "#pagination1";
+
+  customPagination(items, numItems, perPage, selector);
+
+  ///////////////////////////////////////////////////////////////////////////////
+
+  // filter for search bar
+
+  $('#searchBar').keyup(function(){
+    var valThis = $(this).val().toLowerCase();
+    if(valThis == ""){
+        $('#allQueryData #queryRow').show();           
+    } else {
+        $('#allQueryData #queryRow').each(function(){
+            var text = $(this).text().toLowerCase();
+            (text.indexOf(valThis) >= 0) ? $(this).show() : $(this).hide();
+        });
+      };
+    });
+
+  // sort by update time
+
+  var starBtnClicked = true;
+
+  $('#starBtn').click(function () {
+
+    jQuery.fn.sortDomElements = (function() {
+      return function(comparator) {
+          return Array.prototype.sort.call(this, comparator).each(function(i) {
+                this.parentNode.appendChild(this);
+          });
+      };
+    })();
+
+    $("#allQueryData").children().sortDomElements(function(a,b){
+      akey = $(a).attr("updateTime");
+      bkey = $(b).attr("updateTime");
+
+      if(starBtnClicked) {
+
+        if (akey == bkey) return 0;
+        if (akey < bkey) return -1;
+        if (akey > bkey) return 1;
+
+      } else {
+        
+        if (akey == bkey) return 0;
+        if (akey > bkey) return -1;
+        if (akey < bkey) return 1;
+
+      }
+    })
+
+    starBtnClicked = !starBtnClicked;
+  });
+
+  // set up pagination 
+
+  var items = $("#allQueryData #queryRow");
+  var numItems = items.length;
+  var perPage = 10;
+  var selector = "#pagination2";
 
   customPagination(items, numItems, perPage, selector);
 

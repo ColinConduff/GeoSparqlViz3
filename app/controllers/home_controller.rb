@@ -2,7 +2,7 @@ class HomeController < ApplicationController
   before_action :authenticate_user!
 
   def browse
-  	@sparql_queries = SparqlQuery.joins(:user).uniq
+  	@sparql_queries = SparqlQuery.joins(:user).uniq.where('user_id != ?', current_user )
   	@current_user_queries = SparqlQuery.joins(:user).uniq.where('user_id = ?', current_user )
 
     respond_to do |format|
