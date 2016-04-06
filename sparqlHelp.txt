@@ -1,0 +1,3 @@
+
+# sparql endpoint
+http://usgs-ybother.srv.mst.edu/fuseki/NHD/query

@@ -47,6 +47,7 @@ class SparqlQueriesController < ApplicationController
   # POST /sparql_queries.json
   def create
     @sparql_query = SparqlQuery.new(query_params)
+    @sparql_query.user_id = current_user.id
 
     respond_to do |format|
       if @sparql_query.save

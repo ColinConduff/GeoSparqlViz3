@@ -3,9 +3,11 @@ Rails.application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
   
-  # creates home_path
+  # creates browse_path
   # used by devise after log in
-  get '/home' => 'home#index', as: :home 
+  get '/browse' => 'home#browse', as: :browse 
+  get '/visualize' => 'home#visualize', as: :visualize 
+  get '/editor' => 'home#editor', as: :editor 
 
   # You can have the root of your site routed with "root"
   root to: 'welcome#index'
