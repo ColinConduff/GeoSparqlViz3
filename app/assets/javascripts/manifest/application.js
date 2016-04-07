@@ -23,5 +23,4 @@
 //= require home/map
 //= require home/queries
 //= require home/eventHandling
-//= require SparqlQueries/form
 //= require_tree .

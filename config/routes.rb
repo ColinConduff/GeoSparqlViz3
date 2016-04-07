@@ -7,12 +7,6 @@ Rails.application.routes.draw do
   # used by devise after log in
   get '/browser' => 'browser#index', as: :browser
   get '/visualizer' => 'visualizer#index', as: :visualizer 
-  
-  get '/editor/:id/edit' => 'editor#edit', as: :edit_root_query 
-  # put '/editor/:id' => 'editor#updateRootQuery', as: :update_root_query
-
-  get '/editor/new' => 'editor#new', as: :new_root_query
-  # post '/editor' => 'editor#createRootQuery', as: :create_root_query
 
   # You can have the root of your site routed with "root"
   root to: 'welcome#index'

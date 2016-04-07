@@ -1,0 +1,21 @@
+
+<div class="container-fluid">
+  <div class="row content">
+    <div>
+      <h2>Sparql Endpoints</h2>
+    </div>
+
+    <div>
+      <%= link_to new_sparql_endpoint_path, remote: true do %>
+        <button class="btn btn-default">New</button>
+      <% end %>
+    </div>
+
+    <div id="sparqlEndpointForm" style="display:none;"></div>
+
+    <div id="sparqlEndpoints"><%= render @sparql_endpoints %></div>
+  </div>
+</div>
+
+
+<%= javascript_include_tag 'manifest/welcome', 'data-turbolinks-track' => false %>

@@ -1,6 +1,6 @@
 class SparqlQueriesController < ApplicationController
   before_action :authenticate_user!
-	before_action :all_sparql_queries, only: [:index, :create, :update, :destroy]
+	before_action :all_sparql_queries, only: [:new, :index, :create, :update, :destroy]
   before_action :set_sparql_queries, only: [:edit, :update, :destroy]
   respond_to :html, :js
 
@@ -24,7 +24,7 @@ class SparqlQueriesController < ApplicationController
 
   private
 
-     def all_sparql_queries
+    def all_sparql_queries
       @sparql_queries = SparqlQuery.all
     end
 
