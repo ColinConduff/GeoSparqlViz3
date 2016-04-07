@@ -1,22 +1,8 @@
-class HomeController < ApplicationController
-  before_action :authenticate_user!
-
-  # update this to only show root sparql queries
-  # .where('parent_query_id = nil/null')
-  def browse
-  	@sparql_queries = SparqlQuery.joins(:user).uniq.where('user_id != ?', current_user )
-  	@current_user_queries = SparqlQuery.joins(:user).uniq.where('user_id = ?', current_user )
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @sparql_queries }
-      format.js
-    end
-  end
-
+class EditorController < ApplicationController
+  
   # GET /editor/new
   # GET /editor/new.json
-  def newRootQuery
+  def new
     @sparql_query = SparqlQuery.new
 
     respond_to do |format|
@@ -27,7 +13,7 @@ class HomeController < ApplicationController
   end
 
   # GET /editor/1/edit
-  def editRootQuery
+  def edit
     @sparql_query = SparqlQuery.find(params[:id])
   end
 
@@ -59,7 +45,4 @@ class HomeController < ApplicationController
   #     end
   #   end
   # end
-
-  def visualize
-  end
 end

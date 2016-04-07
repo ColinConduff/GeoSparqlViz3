@@ -1,100 +1,38 @@
 class SparqlQueriesController < ApplicationController
-	
   before_action :authenticate_user!
+	before_action :all_sparql_queries, only: [:index, :create, :update, :destroy]
+  before_action :set_sparql_queries, only: [:edit, :update, :destroy]
+  respond_to :html, :js
 
-  # GET /sparql_queries
-  # GET /sparql_queries.json
-  def index
-    @sparql_queries = SparqlQuery.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @sparql_queries }
-      format.js
-    end
-  end
-
-  # GET /sparql_queries/1
-  # GET /sparql_queries/1.json
-  def show
-    @sparql_query = SparqlQuery.find(params[:id])
-    
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @sparql_query }
-      format.js
-    end
-  end
-
-  # GET /sparql_queries/new
-  # GET /sparql_queries/new.json
   def new
     @sparql_query = SparqlQuery.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @sparql_query }
-      format.js
-    end
   end
 
-  # GET /sparql_queries/1/edit
-  def edit
-    @sparql_query = SparqlQuery.find(params[:id])
-  end
-
-  # POST /sparql_queries
-  # POST /sparql_queries.json
   def create
     @sparql_query = SparqlQuery.new(query_params)
     @sparql_query.user_id = current_user.id
-
-    respond_to do |format|
-      if @sparql_query.save
-        format.html { redirect_to @sparql_query, notice: 'Sparql query was successfully created.' }
-        format.json { render json: @sparql_query, status: :created, location: @sparql_query }
-        format.js
-      else
-        format.html { render action: "new" }
-        format.json { render json: @sparql_query.errors, status: :unprocessable_entity }
-        format.js
-      end
-    end
+    @sparql_query.save
   end
 
-  # PUT /sparql_queries/1
-  # PUT /sparql_queries/1.json
   def update
-    @sparql_query = SparqlQuery.find(params[:id])
-
-    respond_to do |format|
-      if @sparql_query.update_attributes(query_params)
-        format.html { redirect_to @sparql_query, notice: 'Sparql query was successfully updated.' }
-        format.json { head :no_content }
-        format.js
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @sparql_query.errors, status: :unprocessable_entity }
-        format.js
-      end
-    end
+    @sparql_query.update_attributes(query_params)
   end
 
-  # DELETE /sparql_queries/1
-  # DELETE /sparql_queries/1.json
   def destroy
-    @sparql_query = SparqlQuery.find(params[:id])
     @sparql_query.destroy
-
-    respond_to do |format|
-      format.html { redirect_to sparql_queries_url }
-      format.json { head :no_content }
-      format.js
-    end
   end
 
   private
-  def query_params
-    params.require(:sparql_query).permit(:name, :query, :sparql_endpoint_id)
-  end
+
+     def all_sparql_queries
+      @sparql_queries = SparqlQuery.all
+    end
+
+    def set_sparql_queries
+      @sparql_query = SparqlQuery.find(params[:id])
+    end
+
+    def query_params
+      params.require(:sparql_query).permit(:name, :query, :sparql_endpoint_id)
+    end
 end

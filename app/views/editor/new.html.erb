@@ -1,0 +1,23 @@
+<%= render "partials/navbar" %>
+
+<div class="container">
+	<div class="page-header text-center">
+	    <h1>Editor</h1>
+	</div>
+
+	<%= render "sparql_queries/form" %>
+
+	<div class="row">
+	  <div class="col-md-6 col-md-offset-2" id="sparqlQueryForm" style="display:none;"></div>
+	</div>
+
+	<div class="row">
+	  <div class="col-md-7 col-md-offset-1" id="sparqlQueries"><%= render @sparql_query %></div>
+	</div>
+
+	<%= link_to new_sparql_query_path, remote: true do %>
+    <button class="btn btn-default">
+      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    </button>
+  <% end %>
+</div>

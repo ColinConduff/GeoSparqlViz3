@@ -1,12 +1,17 @@
 
-<%= render "home/navbar" %>
+<%= render "partials/navbar" %>
 
 <div class="col-xs-6">
   <div class="page-header text-center">
     My Sparql Queries
   </div>
   <div class="col-xs-7">
-    <%= link_to '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>'.html_safe + " New Query", new_root_query_path, class:"btn btn-success"%>
+    <%= link_to new_root_query_path do %>
+      <button class="btn btn-default">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+      </button>
+    <% end %>
+    <%#= link_to '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>'.html_safe + " New Query", new_root_query_path, remote: true, class:"btn btn-success"%>
     <button type="button" class="btn btn-default" id="starBtn" aria-label="Left Align">
       <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
     </button>

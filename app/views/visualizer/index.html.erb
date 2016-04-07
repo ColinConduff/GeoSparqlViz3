@@ -1,0 +1,37 @@
+
+<div class="text-center">
+
+  <%= render "partials/navbar" %>
+
+  <%# flash.each do |name, msg| %>
+    <%#= content_tag :div, msg, class: "alert alert-info" %>
+  <%# end %>
+
+  <div class="row">
+    <div class="col-lg-6 col-xs-12 sideBar">
+      <%= render "left" %>
+    </div>
+    
+    <div class="col-lg-6 col-xs-12 mapOuterDiv">
+      <%= render "right" %>
+    </div>
+  </div>
+</div>
+
+<%= javascript_include_tag 'manifest/home', 'data-turbolinks-track' => false %>
+
+<!-- errors relating to $ undefined if this is not up here rather than in body -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
+
+<%#= javascript_include_tag "jquery" %>
+<%#= javascript_include_tag "bootstrap" %>
+<!-- Latest compiled and minified JavaScript -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script> -->
+
+<%#= javascript_include_tag "proj4js" %>
+<%#= javascript_include_tag "OpenLayers/OpenLayers" %>
+<%#= javascript_include_tag "Openlayers/Openlayers.debug" %>
+<%#= javascript_include_tag "home.map" %>
+<%#= javascript_include_tag "home.queries" %>
+<%#= javascript_include_tag "home.index" %>

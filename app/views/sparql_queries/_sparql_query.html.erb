@@ -1,0 +1,18 @@
+<li class="list-group-item list-group-item-info">
+  <%= sparql_query.name %>
+
+  <%= sparql_query.query %>
+
+  <%= sparql_query.sparqlEndpoint.name %>
+
+  <span class="edit">
+    <%= link_to edit_sparql_query_path(sparql_query), remote: true do %>
+      <button class="btn btn-primary btn-xs">Edit</button>
+    <% end %>
+
+    <%= link_to sparql_query, remote: true, method: :delete,
+        data: { confirm: 'Are you sure?' } do %>
+      <button class="btn btn-danger btn-xs">Delete!</button>
+    <% end %>
+  </span>
+</li>

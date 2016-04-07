@@ -9,6 +9,6 @@ class ApplicationController < ActionController::Base
   protected
   # after a user logs in redirect to home#index
   def after_sign_in_path_for(resource)
-	 browse_path
+	  browser_path
 	end
 end
