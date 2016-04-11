@@ -1,20 +1,79 @@
-<div class="container-fluid">
-  <div class="row content">
-    <div>
-      <h2>Sparql Queries</h2>
-    </div>
 
-    <div>
-      <%= link_to new_sparql_query_path, remote: true do %>
-        <button class="btn btn-default">New</button>
-      <% end %>
-    </div>
+<%= render "partials/navbar" %>
 
+<div class="container">
+  <!-- <div class="col-xs-6"> -->
+    <div class="page-header text-center">
+      <h1>My Sparql Queries</h1>
+    </div>
     <div id="sparqlQueryForm" style="display:none;"></div>
+    <div class="row">
+      <div class="col-xs-7">
+        <%= link_to new_sparql_query_path, remote: true do %>
+          <button class="btn btn-default">New</button>
+        <% end %>
+      </div>
+      <!-- <div class="col-xs-5">
+        <div class="form-inline">
+          <div class="form-group">
+            <input type="text" class="form-control" id="searchBar" placeholder="Search">
+          </div>
+        </div>
+      </div> -->
+    </div>
 
+    <!-- removed userQueryData, which was used to filter using text field  -->
     <div id="sparqlQueries"><%= render @sparql_queries %></div>
-  </div>
+
+    <!-- <div class="row text-center">
+      <div class="col-xs-12">
+        <div id="pagination1"></div>
+      </div>
+    </div> -->
+  <!-- </div> -->
+
+  <!-- 
+  Optional feature: browse other users' queries
+
+  <div class="col-xs-6">
+    <div class="page-header text-center">
+      <h1>Browse Other Sparql Queries</h1>
+    </div>
+    <div class="col-xs-6 text-center">
+      <div class="form-inline">
+        <div class="form-group">
+          <input type="text" class="form-control" id="searchBar" placeholder="Search">
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-6 text-center">
+      <button type="button" class="btn btn-default" id="starBtn" aria-label="Left Align">
+        <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+      </button>
+    </div>
+    <div id="allQueryData">
+      <%# @other_user_queries.each do |sparql_query| %>
+        <div class="row" id="queryRow" updateTime='<%#= sparql_query.updated_at %>'>
+            <div class="text-center">
+              <h5><%#= link_to sparql_query.name, sparql_query %></h5>
+            </div>
+        </div>
+      <%# end %>
+      <div class="row text-center">
+        <div class="col-xs-12">
+          <div id="pagination2"></div>
+        </div>
+      </div>
+    </div>
+  </div> -->
 </div>
 
+<%= javascript_include_tag 'manifest/sparqlQueries/general', 'data-turbolinks-track' => false %>
 
-<%= javascript_include_tag 'manifest/welcome', 'data-turbolinks-track' => false %>
+
+<style>
+/* center pagination block */
+.simple-pagination ul {
+  display: inline-block;
+}
+</style>
