@@ -5,8 +5,8 @@ Rails.application.routes.draw do
   
   # creates browse_path
   # used by devise after log in
-  get '/browser' => 'browser#index', as: :browser
-  get '/visualizer' => 'visualizer#index', as: :visualizer 
+  # get '/browser' => 'browser#index', as: :browser
+  # get '/visualizer' => 'visualizer#index', as: :visualizer 
 
   # You can have the root of your site routed with "root"
   root to: 'welcome#index'

@@ -5,6 +5,12 @@
 
   <%= sparql_query.sparqlEndpoint.name %>
 
+  <% if(sparql_query.parentQuery == nil) %>
+    No parent query
+  <% else %>
+    <%= sparql_query.parentQuery.name %>
+  <% end %>
+
   <span class="edit">
     <%= link_to edit_sparql_query_path(sparql_query), remote: true do %>
       <button class="btn btn-primary btn-xs">Edit</button>
@@ -15,6 +21,4 @@
       <button class="btn btn-danger btn-xs">Delete!</button>
     <% end %>
   </span>
-
-  <div id="sparqlQueryForm" style="display:none;"></div>
 </li>

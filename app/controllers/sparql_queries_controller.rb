@@ -1,8 +1,17 @@
 class SparqlQueriesController < ApplicationController
+
   before_action :authenticate_user!
 	before_action :all_sparql_queries, only: [:new, :index, :create, :update, :destroy]
   before_action :set_sparql_queries, only: [:edit, :update, :destroy]
+  before_action :get_data_for_form, only: [:new, :edit]
   respond_to :html, :js
+
+  # update this to only show root sparql queries
+  # .where('parent_query_id = nil/null')
+  # def index
+  #   @sparql_queries = SparqlQuery.joins(:user).uniq.where('user_id != ?', current_user )
+  #   @current_user_queries = SparqlQuery.joins(:user).uniq.where('user_id = ?', current_user )
+  # end
 
   def new
     @sparql_query = SparqlQuery.new
@@ -12,6 +21,9 @@ class SparqlQueriesController < ApplicationController
     @sparql_query = SparqlQuery.new(query_params)
     @sparql_query.user_id = current_user.id
     @sparql_query.save
+  end
+
+  def edit
   end
 
   def update
@@ -32,7 +44,12 @@ class SparqlQueriesController < ApplicationController
       @sparql_query = SparqlQuery.find(params[:id])
     end
 
+    def get_data_for_form
+      @sparql_endpoints = SparqlEndpoint.joins(:user).uniq.where('user_id = ?', current_user )
+      @parent_queries = SparqlQuery.joins(:user).uniq.where('user_id = ?', current_user )
+    end
+
     def query_params
-      params.require(:sparql_query).permit(:name, :query, :sparql_endpoint_id)
+      params.require(:sparql_query).permit(:name, :query, :sparql_endpoint_id, :parent_query_id)
     end
 end

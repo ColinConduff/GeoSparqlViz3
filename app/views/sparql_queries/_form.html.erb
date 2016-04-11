@@ -20,7 +20,10 @@
     <%= f.text_area :query, class:"form-control"%>
   </div>
   <div class="form-group">
-    <%= f.collection_select(:sparql_endpoint_id, SparqlEndpoint.all, :id, :name) %>
+    <%= f.collection_select(:sparql_endpoint_id, @sparql_endpoints, :id, :name) %>
+  </div>
+  <div class="form-group">
+    <%= f.collection_select(:parent_query_id, @parent_queries, :id, :name) %>
   </div>
 
   <div class="form-actions">

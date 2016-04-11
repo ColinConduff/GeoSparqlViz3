@@ -4,6 +4,8 @@ class SparqlQuery < ActiveRecord::Base
 	belongs_to :sparqlEndpoint, inverse_of: :sparqlQueries, :foreign_key => 'sparql_endpoint_id'
 	# validates_associated :sparqlEndpoint
 	
-	belongs_to :parentQuery, class_name: "SparqlQuery", inverse_of: :childQueries
+	# if this breaks again, look here: 
+	# http://stackoverflow.com/questions/9250409/understanding-rails-activerecord-single-model-self-joins
 	has_many :childQueries, class_name: "SparqlQuery", foreign_key: "parent_query_id", inverse_of: :parentQuery
+	belongs_to :parentQuery, class_name: "SparqlQuery", foreign_key: "parent_query_id", inverse_of: :childQueries
 end
