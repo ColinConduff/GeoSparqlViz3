@@ -1,66 +1,81 @@
 class SparqlQueriesController < ApplicationController
-
   before_action :authenticate_user!
-	before_action :all_sparql_queries, only: [:index, :edit, :new, :create, :update, :destroy]
-  before_action :set_sparql_queries, only: [:edit, :update, :destroy]
-  before_action :get_data_for_form, only: [:new, :edit]
-  respond_to :html, :js
+  before_action :set_sparql_query, only: [:show, :edit, :update, :destroy]
 
-  # update this to only show root sparql queries
-  # .where('parent_query_id = nil/null')
+  # GET /sparql_queries
+  # GET /sparql_queries.json
   def index
-    # @other_user_queries = SparqlQuery.joins(:user).uniq.where('user_id != ?', current_user )
-    # @current_user_queries = SparqlQuery.joins(:user).uniq.where('user_id = ?', current_user )
-    @this_is_the_index_page = true
+    # current user's root sparql queries
+    @sparql_queries = SparqlQuery.joins(:user).where('user_id = ? AND parent_query_id IS NULL', current_user)
   end
 
+  # GET /sparql_queries/1
+  # GET /sparql_queries/1.json
   def show
-    # @sparql_queries = SparqlQuery.joins(:user).uniq.where('user_id = ?', current_user )
     @sparql_queries = find_all_child_queries(params[:id])
-    @this_is_the_index_page = false
   end
 
+  # GET /sparql_queries/new
   def new
     @sparql_query = SparqlQuery.new
   end
 
-  def create
-    @sparql_query = SparqlQuery.new(query_params)
-    @sparql_query.user_id = current_user.id
-    @sparql_query.save
-  end
-
+  # GET /sparql_queries/1/edit
   def edit
+    @sparql_endpoints = SparqlEndpoint.joins(:user).where('user_id = ?', current_user)
+    @parent_queries = SparqlQuery.joins(:user).where('user_id = ?', current_user)
   end
 
+  # POST /sparql_queries
+  # POST /sparql_queries.json
+  def create
+    @sparql_query = SparqlQuery.new(sparql_query_params)
+    @sparql_query.user_id = current_user.id
+
+    respond_to do |format|
+      if @sparql_query.save
+        format.html { redirect_to @sparql_query, notice: 'Sparql endpoint was successfully created.' }
+        format.json { render :show, status: :created, location: @sparql_query }
+      else
+        format.html { render :new }
+        format.json { render json: @sparql_query.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /sparql_queries/1
+  # PATCH/PUT /sparql_queries/1.json
   def update
-    @sparql_query.update_attributes(query_params)
+    respond_to do |format|
+      if @sparql_query.update(sparql_query_params)
+        format.html { redirect_to @sparql_query, notice: 'Sparql query was successfully updated.' }
+        format.json { render :show, status: :ok, location: @sparql_query }
+      else
+        format.html { render :edit }
+        format.json { render json: @sparql_query.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
+  # DELETE /sparql_queries/1
+  # DELETE /sparql_queries/1.json
   def destroy
     @sparql_query.destroy
+    respond_to do |format|
+      format.html { redirect_to sparql_queries_url, notice: 'Sparql query was successfully destroyed.' }
+      format.json { head :no_content }
+    end
   end
 
   private
-
-    def all_sparql_queries
-      @sparql_queries = SparqlQuery.joins(:user).uniq.where('user_id = ?', current_user )
-    end
-
-    def set_sparql_queries
+    # Use callbacks to share common setup or constraints between actions.
+    def set_sparql_query
       @sparql_query = SparqlQuery.find(params[:id])
     end
 
-    def get_data_for_form
-
-      @sparql_endpoints = SparqlEndpoint.all 
-      @parent_queries = SparqlQuery.all
-
-      # no sparql endpoints are returned?
-      # @sparql_endpoints = SparqlEndpoint.joins(:user).uniq.where('user_id = ?', current_user )
-      
-      # adding and id = ? breaks form
-      # @parent_queries = SparqlQuery.joins(:user).uniq.where('user_id = ? AND id = ?', current_user, sparql_query.id )
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def sparql_query_params
+      params.fetch(:sparql_query, {})
     end
 
     def find_all_child_queries(parent_id)
@@ -74,9 +89,5 @@ class SparqlQueriesController < ApplicationController
 
       # return child_queries array
       child_queries 
-    end
-
-    def query_params
-      params.require(:sparql_query).permit(:name, :query, :sparql_endpoint_id, :parent_query_id)
     end
 end

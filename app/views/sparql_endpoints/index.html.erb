@@ -1,21 +1,35 @@
 
-<div class="container-fluid">
-  <div class="row content">
-    <div>
-      <h2>Sparql Endpoints</h2>
-    </div>
 
-    <div>
-      <%= link_to new_sparql_endpoint_path, remote: true do %>
-        <button class="btn btn-default">New</button>
-      <% end %>
-    </div>
+<p id="notice"><%= notice %></p>
 
-    <div id="sparqlEndpointForm" style="display:none;"></div>
+<h1>Listing Sparql Endpoints</h1>
 
-    <div id="sparqlEndpoints"><%= render @sparql_endpoints %></div>
-  </div>
-</div>
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
 
+  <tbody>
+    <% @sparql_endpoints.each do |sparql_endpoint| %>
+      <tr>
+        <td><%= sparql_endpoint.name %></td>
+        <td><%= sparql_endpoint.endpoint %></td>
+        <td><%= link_to 'Show', sparql_endpoint %></td>
+        <td><%= link_to 'Edit', edit_sparql_endpoint_path(sparql_endpoint) %></td>
+        <td>
+          <%= link_to sparql_endpoint, method: :delete, data: { confirm: 'Are you sure?' } do %>
+            <button class="btn btn-danger">Delete!</button>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
-<%= javascript_include_tag 'manifest/welcome', 'data-turbolinks-track' => false %>
+<br>
+
+<%= link_to 'New Sparql endpoint', new_sparql_endpoint_path %>
+
+<%= javascript_include_tag 'manifest/sparqlQueries/general', 'data-turbolinks-track' => false %>

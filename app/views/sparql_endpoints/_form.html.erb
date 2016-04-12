@@ -1,11 +1,11 @@
-<%= form_for(@sparql_endpoint, remote: true) do |f| %>
+<%= form_for(@sparql_endpoint) do |f| %>
   <% if @sparql_endpoint.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@sparql_endpoint.errors.count, "error") %> prohibited this sparql_endpoint from being saved:</h2>
 
       <ul>
-      <% @sparql_endpoint.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+      <% @sparql_endpoint.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
       <% end %>
       </ul>
     </div>
