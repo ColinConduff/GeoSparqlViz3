@@ -1,44 +1,54 @@
 
-<div class="row text-center" id="queryRow">
-  <div class="col-xs-6">
-    <h5><%= sparql_query.name %></h5>
+<% if(@this_is_the_index_page) %>
+
+  <div class="row text-center" id="queryRow">
+    
+    <div class="col-xs-6">
+      <h5><%= sparql_query.name %></h5>
+    </div>
+
+    <div class="col-xs-2">
+      <%= link_to sparql_query do %>
+        <button class="btn btn-info">
+          Edit
+        </button>
+      <% end %>
+    </div>
+
+    <div class="col-xs-2">
+      <%= link_to sparql_query, remote: true, method: :delete,
+          data: { confirm: 'Are you sure?' } do %>
+        <button class="btn btn-danger">Delete!</button>
+      <% end %>
+    </div>
+
   </div>
-  <div class="col-xs-2">
-    <%= link_to sparql_query do %>
-      <button class="btn btn-info">
-        Edit
-      </button>
+
+<% else %>
+
+  <li class="list-group-item list-group-item-info">
+    <%= sparql_query.name %>
+
+    <%= sparql_query.query %>
+
+    <%= sparql_query.sparqlEndpoint.name %>
+
+    <% if(sparql_query.parentQuery == nil) %>
+      No parent query
+    <% else %>
+      <%= sparql_query.parentQuery.name %>
     <% end %>
-  </div>
-  <div class="col-xs-2">
-    <%= link_to sparql_query, remote: true, method: :delete,
-        data: { confirm: 'Are you sure?' } do %>
-      <button class="btn btn-danger">Delete!</button>
-    <% end %>
-  </div>
-</div>
 
-<!-- <li class="list-group-item list-group-item-info">
-  <%#= sparql_query.name %>
+    <span class="edit">
+      <%= link_to edit_sparql_query_path(sparql_query), remote: true do %>
+        <button class="btn btn-primary btn-xs">Edit</button>
+      <% end %>
 
-  <%#= sparql_query.query %>
+      <%= link_to sparql_query, remote: true, method: :delete,
+          data: { confirm: 'Are you sure?' } do %>
+        <button class="btn btn-danger btn-xs">Delete!</button>
+      <% end %>
+    </span> 
+  </li>
 
-  <%#= sparql_query.sparqlEndpoint.name %>
-
-  <%# if(sparql_query.parentQuery == nil) %>
-    No parent query
-  <%# else %>
-    <%#= sparql_query.parentQuery.name %>
-  <%# end %>
-
-  <span class="edit">
-    <%#= link_to edit_sparql_query_path(sparql_query), remote: true do %>
-      <button class="btn btn-primary btn-xs">Edit</button>
-    <%# end %>
-
-    <%#= link_to sparql_query, remote: true, method: :delete,
-        data: { confirm: 'Are you sure?' } do %>
-      <button class="btn btn-danger btn-xs">Delete!</button>
-    <%# end %>
-  </span> 
-</li> -->
+<% end %>
