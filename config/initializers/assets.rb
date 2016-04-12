@@ -11,6 +11,7 @@ Rails.application.config.assets.version = '1.0'
 # Rails.application.config.assets.precompile += %w( search.js )
 
 # Rails.application.config.assets.precompile += %w( codeMirrorHopscotch.css )
+
 Rails.application.config.assets.precompile += %w( manifest/welcome.js )
 Rails.application.config.assets.precompile += %w( manifest/home.js )
 Rails.application.config.assets.precompile += %w( manifest/sparqlQueries/form.js )

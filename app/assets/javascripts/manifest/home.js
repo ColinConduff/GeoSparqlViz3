@@ -2,7 +2,6 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap/js/bootstrap.min
-//= require bootstrap-select/dist/js/bootstrap-select.min
 //= require proj4js
 //= require OpenLayers/OpenLayers
 //= require OpenLayers/OpenLayers.debug

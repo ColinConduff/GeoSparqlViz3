@@ -11,7 +11,7 @@
  * file per style scope.
  *
  *= require bootstrap/css/bootstrap.min
- *= require bootstrap-select/dist/css/bootstrap-select.min
+ *= require rails_bootstrap_forms
  *= require scaffolds
  *= require simplePagination
  *= require sparql_queries

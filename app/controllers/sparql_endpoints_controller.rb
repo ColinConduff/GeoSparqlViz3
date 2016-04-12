@@ -5,7 +5,7 @@ class SparqlEndpointsController < ApplicationController
   # GET /sparql_endpoints
   # GET /sparql_endpoints.json
   def index
-    @sparql_endpoints = SparqlEndpoint.all
+    @sparql_endpoints = SparqlEndpoint.joins(:user).where('user_id = ?', current_user)
   end
 
   # GET /sparql_endpoints/1
@@ -26,6 +26,7 @@ class SparqlEndpointsController < ApplicationController
   # POST /sparql_endpoints.json
   def create
     @sparql_endpoint = SparqlEndpoint.new(sparql_endpoint_params)
+    @sparql_endpoint.user_id = current_user.id
 
     respond_to do |format|
       if @sparql_endpoint.save

@@ -7,8 +7,8 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 User.create!([
-  {email: "test2@gmail.com", password: "test2345", password_confirmation: "test2345"},
-  {email: "test3@gmail.com", password: "test3456", password_confirmation: "test3456"}
+  {email: "test2@gmail.com", password: "test2345", password_confirmation: "test2345"}#,
+  #{email: "test3@gmail.com", password: "test3456", password_confirmation: "test3456"}
 ])
 
 user1 = User.create!(email: "test1@gmail.com", password: "test1234", password_confirmation: "test1234")
@@ -20,7 +20,7 @@ sparql_queries_list = [
 	["Get WKT data for feature", "PREFIX geo: <http://www.opengis.net/ont/geosparql#> SELECT ?wkt WHERE { <http://cegis.usgs.gov/rdf/trans/Features/VA000145> geo:hasGeometry ?g . ?g geo:asWKT ?wkt . }"]
 ]
 
-se = SparqlEndpoint.create(name: "James Madison U", endpoint: "http://geoquery.cs.jmu.edu:8081/parliament/sparql");
+se = SparqlEndpoint.create(name: "USGS NHD", endpoint: "http://usgs-ybother.srv.mst.edu/fuseki/NHD/query");
 
 # Yes this is a very silly way to do this
 sq1 = SparqlQuery.create(

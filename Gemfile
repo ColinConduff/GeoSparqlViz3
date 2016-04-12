@@ -48,3 +48,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'devise'
 
 gem 'codemirror-rails', '~> 5.6'
+
+gem 'bootstrap_form'

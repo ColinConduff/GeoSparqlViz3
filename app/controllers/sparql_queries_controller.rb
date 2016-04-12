@@ -7,6 +7,7 @@ class SparqlQueriesController < ApplicationController
   def index
     # current user's root sparql queries
     @sparql_queries = SparqlQuery.joins(:user).where('user_id = ? AND parent_query_id IS NULL', current_user)
+    @other_users_sparql_queries = SparqlQuery.joins(:user).where('user_id != ? AND parent_query_id IS NULL', current_user)
   end
 
   # GET /sparql_queries/1
@@ -18,6 +19,8 @@ class SparqlQueriesController < ApplicationController
   # GET /sparql_queries/new
   def new
     @sparql_query = SparqlQuery.new
+    @sparql_endpoints = SparqlEndpoint.joins(:user).where('user_id = ?', current_user)
+    @parent_queries = SparqlQuery.joins(:user).where('user_id = ?', current_user)
   end
 
   # GET /sparql_queries/1/edit
@@ -73,9 +76,8 @@ class SparqlQueriesController < ApplicationController
       @sparql_query = SparqlQuery.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def sparql_query_params
-      params.fetch(:sparql_query, {})
+      params.require(:sparql_query).permit(:name, :query, :sparql_endpoint_id, :parent_query_id)
     end
 
     def find_all_child_queries(parent_id)

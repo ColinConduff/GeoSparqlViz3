@@ -1,4 +1,4 @@
-<%= form_for(@sparql_query, remote: true) do |f| %>
+<%= bootstrap_form_for(@sparql_query) do |f| %>
   <% if @sparql_query.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@sparql_query.errors.count, "error") %> prohibited this sparql_query from being saved:</h2>
@@ -12,22 +12,21 @@
   <% end %>
 
   <div class="form-group">
-    <%= f.label :name %><br />
     <%= f.text_field :name, class:"form-control" %>
   </div>
   <div class="form-group">
-    <%= f.label :query %><br />
     <%= f.text_area :query, class:"form-control"%>
   </div>
   <div class="form-group">
-    <%= f.collection_select(:sparql_endpoint_id, @sparql_endpoints, :id, :name, {prompt: "Select a sparql endpoint"}, {classname: "selectpicker", id: "endpointMenu"}) %>
+    <%= f.collection_select(:sparql_endpoint_id, @sparql_endpoints, :id, :name, {prompt: "Select a sparql endpoint"}) %>
   </div>
 
   <div class="form-group">
-    <%= f.collection_select(:parent_query_id, @parent_queries, :id, :name, {prompt: "Select a parent query"}, {classname: "selectpicker", id: "parentQueryMenu"}) %>
+    <%= f.collection_select(:parent_query_id, @parent_queries, :id, :name, {prompt: "Select a parent query"}) %>
   </div>
 
   <div class="form-actions">
     <input name="commit" value="Submit" type="submit" class="btn btn-default btn-block btn-primary">
   </div>
 <% end %>
+

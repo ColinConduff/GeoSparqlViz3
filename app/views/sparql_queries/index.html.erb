@@ -1,88 +1,95 @@
 
+<div class="text-center">
+  <h1>Browse Sparql Queries</h1>
+</div>
+<hr/>
 
-
-
-  <div class="page-header text-center">
-    My Sparql Queries
-  </div>
-  <div class="row">
-    <!-- <div class="col-xs-5">
-      <div class="form-inline">
-        <div class="form-group">
-          <input type="text" class="form-control" id="searchBar" placeholder="Search">
-        </div>
-      </div>
-    </div> -->
-    <div class="col-xs-3">
-      <%= link_to new_sparql_query_path do %>
-        <button class="btn btn-primary">
-          New Sparql Query
-        </button>
-      <% end %>
-    </div>
-  </div>
-  <div id="userQueryData">
-      <% @sparql_queries.each do |sparql_query| %>
-        <div class="row" id="queryRow">
-            <div class="col-xs-6 col-sm-8 text-center">
-              <h5><%= link_to sparql_query.name, sparql_query %></h5>
+<div class="row">
+  <div class="col-xs-6">
+    <div class="panel panel-default">
+      <div class="panel-heading text-center"><h4>My Sparql Queries</h4></div>
+      <div class="panel-body">
+        <div class="row">
+          <!-- <div class="col-xs-5">
+            <div class="form-inline">
+              <div class="form-group">
+                <input type="text" class="form-control" id="searchBar" placeholder="Search">
+              </div>
             </div>
-            <div class="col-xs-2">
-              <%= link_to edit_sparql_query_path(sparql_query) do %>
-                <button class="btn btn-info">
-                  Edit
-                </button>
-              <% end %>
-            </div>
-            <div class="col-xs-2">
-              <%= link_to sparql_query, method: :delete,
-                data: { confirm: 'Are you sure?' } do %>
-                <button class="btn btn-danger">Delete!</button>
-              <% end %>
-            </div>
-        </div>
-      <% end %>
-  </div>
-
-  <!-- <div class="row text-center">
-    <div class="col-xs-12">
-      <div id="pagination1"></div>
-    </div>
-  </div> -->
-
-
-
-<!-- <div class="col-xs-6">
-  <div class="page-header text-center">
-    Other Users' Sparql Queries
-  </div>
-  <div class="col-xs-6 text-center">
-    <div class="form-inline">
-      <div class="form-group">
-        <input type="text" class="form-control" id="searchBar" placeholder="Search">
-      </div>
-    </div>
-  </div>
-  <div class="col-xs-6 text-center">
-    <button type="button" class="btn btn-default" id="starBtn" aria-label="Left Align">
-      <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-    </button>
-  </div>
-  <div id="allQueryData">
-    <%# @sparql_queries.each do |sparql_query| %>
-      <div class="row" id="queryRow">
-          <div class="text-center">
-            <h5><%#= link_to sparql_query.name, sparql_query %></h5>
+          </div> -->
+          <div class="col-xs-3">
+            <%= link_to new_sparql_query_path do %>
+              <button class="btn btn-primary btn-xs">
+                New Sparql Query
+              </button>
+            <% end %>
           </div>
+        </div>
       </div>
-    <%# end %>
-    <div class="row text-center">
-      <div class="col-xs-12">
-        <div id="pagination2"></div>
+
+      <table class="table">
+        <% @sparql_queries.each do |sparql_query| %>
+          <tr class="row" id="queryRow">
+              <td class="text-center">
+                <h5><%= link_to sparql_query.name, sparql_query %></h5>
+              </td>
+              <td>
+                <%= link_to edit_sparql_query_path(sparql_query) do %>
+                  <button class="btn btn-info">
+                    Edit
+                  </button>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to sparql_query, method: :delete,
+                  data: { confirm: 'Are you sure?' } do %>
+                  <button class="btn btn-danger">Delete!</button>
+                <% end %>
+              </td>
+          </tr>
+        <% end %>
+      </table>
+      <div class="panel-footer text-center">
+        Add pagination
+      <!-- <div id="pagination1"></div> -->
       </div>
     </div>
+    
   </div>
-</div> -->
+
+  <div class="col-xs-6">
+
+    <div class="panel panel-default">
+      <div class="panel-heading text-center"><h4>Other Users' Sparql Queries</h4></div>
+      <div class="panel-body">
+        <div class="col-xs-6 text-center">
+          <div class="form-inline">
+            <div class="form-group">
+              <input type="text" class="form-control" id="searchBar" placeholder="Search">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <table class="table" id="otherQueryData">
+        <% @other_users_sparql_queries.each do |sparql_query| %>
+          <tr id="queryRow">
+              <td class="text-center">
+                <h5><%= link_to sparql_query.name, sparql_query %></h5>
+              </td>
+          </tr>
+        <% end %>
+      </table>
+      <div class="panel-footer text-center">
+        Add pagination
+        <!-- <div id="pagination2"></div> -->
+      </div>
+    </div>
+
+      
+    </div>
+  </div>
+</div>
 
 <%= javascript_include_tag 'manifest/sparqlQueries/general', 'data-turbolinks-track' => false %>
 
