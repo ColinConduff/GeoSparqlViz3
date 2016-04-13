@@ -5,38 +5,54 @@
 
 <%= link_to 'Back', sparql_queries_path %>
 
-<%= @sparql_query.name %>
-<%= @sparql_query.query %>
+<!--  -->
+<!-- make the first panel open by default -->
+<!--  -->
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  <% @sparql_queries.each do |sparql_query| %>
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="heading<%= sparql_query.id %>">
+        <h4 class="panel-title">
+          <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= sparql_query.id %>" aria-expanded="false" aria-controls="collapse<%= sparql_query.id %>">
+            <%= sparql_query.name %>
+          </a>
+        </h4>
+      </div>
+      <div id="collapse<%= sparql_query.id %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<%= sparql_query.id %>">
+        <div class="panel-body">
+          <div class="row" id="queryRow">
+              <div class="col-xs-10">
+                <%= sparql_query.query %>
+              </div>
 
-<%= link_to edit_sparql_query_path(@sparql_query) do %>
-  <button class="btn btn-info">
-    Edit
-  </button>
-<% end %>
-<%= link_to @sparql_query, method: :delete,
-          data: { confirm: 'Are you sure?' } do %>
-  <button class="btn btn-danger">Delete!</button>
-<% end %> 
+              <!-- Prevent a user from editing/deleting a different user's query -->
+              <% if current_user.id == sparql_query.user.id %> 
+                <div class="col-xs-2">
+                  <%= link_to edit_sparql_query_path(sparql_query) do %>
+                    <button class="btn btn-info">Edit</button>
+                  <% end %>
+                </div>
+                <div class="col-xs-2">
+                  <%= link_to sparql_query, method: :delete, data: { confirm: 'Are you sure?' } do %>
+                    <button class="btn btn-danger">Delete!</button>
+                  <% end %>
+                </div>
+              <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>  
+</div>
 
-<% @sparql_queries.each do |sparql_query| %>
-  <div class="row" id="queryRow">
-      <div class="col-xs-6 col-sm-8 text-center">
-        <h5><%= link_to sparql_query.name, sparql_query %></h5>
-      </div>
-      <div class="col-xs-2">
-        <%= link_to edit_sparql_query_path(sparql_query) do %>
-          <button class="btn btn-info">
-            Edit
-          </button>
-        <% end %>
-      </div>
-      <div class="col-xs-2">
-        <%= link_to sparql_query, method: :delete,
-          data: { confirm: 'Are you sure?' } do %>
-          <button class="btn btn-danger">Delete!</button>
-        <% end %>
-      </div>
-  </div>
-<% end %>
+<button class="btn btn-primary btn-xs" data-toggle="collapse" data-target="#newQueryForm">
+  New Sparql Query
+</button>
+
+<div id="newQueryForm" class="collapse">
+  <%= render 'form_for_new_child' %>
+</div>
+
+
 
 <%= javascript_include_tag 'manifest/sparqlQueries/general', 'data-turbolinks-track' => false %>

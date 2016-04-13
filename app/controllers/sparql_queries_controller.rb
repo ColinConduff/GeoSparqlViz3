@@ -1,6 +1,6 @@
 class SparqlQueriesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_sparql_query, only: [:show, :edit, :update, :destroy]
+  before_action :set_sparql_query, only: [:edit, :update, :destroy]
 
   # GET /sparql_queries
   # GET /sparql_queries.json
@@ -13,20 +13,26 @@ class SparqlQueriesController < ApplicationController
   # GET /sparql_queries/1
   # GET /sparql_queries/1.json
   def show
+    # includes root query
     @sparql_queries = find_all_child_queries(params[:id])
+
+    # used for new query form
+    @sparql_query = SparqlQuery.new
+    @sparql_endpoints = SparqlEndpoint.joins(:user).where('user_id = ?', current_user)
+    #@parent_queries = SparqlQuery.joins(:user).where('user_id = ?', current_user)
   end
 
   # GET /sparql_queries/new
   def new
     @sparql_query = SparqlQuery.new
     @sparql_endpoints = SparqlEndpoint.joins(:user).where('user_id = ?', current_user)
-    @parent_queries = SparqlQuery.joins(:user).where('user_id = ?', current_user)
+    #@parent_queries = SparqlQuery.joins(:user).where('user_id = ?', current_user)
   end
 
   # GET /sparql_queries/1/edit
   def edit
     @sparql_endpoints = SparqlEndpoint.joins(:user).where('user_id = ?', current_user)
-    @parent_queries = SparqlQuery.joins(:user).where('user_id = ?', current_user)
+    #@parent_queries = SparqlQuery.joins(:user).where('user_id = ?', current_user)
   end
 
   # POST /sparql_queries
@@ -35,9 +41,12 @@ class SparqlQueriesController < ApplicationController
     @sparql_query = SparqlQuery.new(sparql_query_params)
     @sparql_query.user_id = current_user.id
 
+    # redirect to the root sparql_query
+    @redirect_target = set_redirect_target(@sparql_query)
+
     respond_to do |format|
       if @sparql_query.save
-        format.html { redirect_to @sparql_query, notice: 'Sparql endpoint was successfully created.' }
+        format.html { redirect_to @redirect_target, notice: 'Sparql endpoint was successfully created.' }
         format.json { render :show, status: :created, location: @sparql_query }
       else
         format.html { render :new }
@@ -49,9 +58,13 @@ class SparqlQueriesController < ApplicationController
   # PATCH/PUT /sparql_queries/1
   # PATCH/PUT /sparql_queries/1.json
   def update
+
+    # redirect to the root sparql_query
+    @redirect_target = set_redirect_target(@sparql_query)
+
     respond_to do |format|
       if @sparql_query.update(sparql_query_params)
-        format.html { redirect_to @sparql_query, notice: 'Sparql query was successfully updated.' }
+        format.html { redirect_to @redirect_target, notice: 'Sparql query was successfully updated.' }
         format.json { render :show, status: :ok, location: @sparql_query }
       else
         format.html { render :edit }
@@ -63,9 +76,32 @@ class SparqlQueriesController < ApplicationController
   # DELETE /sparql_queries/1
   # DELETE /sparql_queries/1.json
   def destroy
+
+    # redirect to the root sparql_query
+    @redirect_target = set_redirect_target(@sparql_query)
+
+    # if the query to delete is the root, redirect to index.html.erb
+    if @redirect_target == @sparql_query
+      @redirect_target = sparql_queries_url
+    end
+
+    # currently set to cascade on delete
+    
+    # if deleting an intermedidate query, 
+    # update parent_query_id for child queries
+    # if @sparql_query.childQueries.size > 0 
+    #   @parent_id = @sparql_query.parent_query_id
+
+    #   @sparql_query.childQueries.each do |query|
+    #     query.parent_query_id = @parent_id
+    #   end
+    # end
+
+    #@sparql_query.childQueries.first.parent_query_id = @sparql_query.parent_query_id
+
     @sparql_query.destroy
     respond_to do |format|
-      format.html { redirect_to sparql_queries_url, notice: 'Sparql query was successfully destroyed.' }
+      format.html { redirect_to @redirect_target, notice: 'Sparql query was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -91,5 +127,16 @@ class SparqlQueriesController < ApplicationController
 
       # return child_queries array
       child_queries 
+    end
+
+    # used to redirect to the root sparql_query
+    def set_redirect_target(s_query)
+      @root_query = s_query
+      while @root_query.parent_query_id != nil do
+        @root_query = @root_query.parentQuery 
+      end
+
+      # return the root query
+      @root_query
     end
 end

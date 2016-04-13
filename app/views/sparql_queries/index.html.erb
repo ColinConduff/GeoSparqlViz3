@@ -33,19 +33,19 @@
               <td class="text-center">
                 <h5><%= link_to sparql_query.name, sparql_query %></h5>
               </td>
-              <td>
-                <%= link_to edit_sparql_query_path(sparql_query) do %>
+              <!-- <td>
+                <%#= link_to edit_sparql_query_path(sparql_query) do %>
                   <button class="btn btn-info">
                     Edit
                   </button>
-                <% end %>
+                <%# end %>
               </td>
               <td>
-                <%= link_to sparql_query, method: :delete,
+                <%#= link_to sparql_query, method: :delete,
                   data: { confirm: 'Are you sure?' } do %>
                   <button class="btn btn-danger">Delete!</button>
-                <% end %>
-              </td>
+                <%# end %>
+              </td> -->
           </tr>
         <% end %>
       </table>
