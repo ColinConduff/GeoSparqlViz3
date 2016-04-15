@@ -1,37 +1,39 @@
 
-<div class="text-center">
+<%# flash.each do |name, msg| %>
+  <%#= content_tag :div, msg, class: "alert alert-info" %>
+<%# end %>
 
-  <%= render "partials/navbar" %>
-
-  <%# flash.each do |name, msg| %>
-    <%#= content_tag :div, msg, class: "alert alert-info" %>
-  <%# end %>
-
-  <div class="row">
-    <div class="col-lg-6 col-xs-12 sideBar">
-      <%= render "left" %>
+<div class="row">
+  <div class="col-lg-6 col-xs-12 sideBar">
+    <div class="well">
+    	<%#= render "left" %>
+    	<span id="menu"></span>
     </div>
-    
-    <div class="col-lg-6 col-xs-12 mapOuterDiv">
-      <%= render "right" %>
-    </div>
+  </div>
+  
+  <div class="col-lg-6 col-xs-12 mapOuterDiv">
+    <div class="well"><%= render "right" %></div>
   </div>
 </div>
 
+
 <%= javascript_include_tag 'manifest/home', 'data-turbolinks-track' => false %>
 
-<!-- errors relating to $ undefined if this is not up here rather than in body -->
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
+<%#= javascript_include_tag "" %>
 
-<%#= javascript_include_tag "jquery" %>
-<%#= javascript_include_tag "bootstrap" %>
-<!-- Latest compiled and minified JavaScript -->
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script> -->
+<script type='text/javascript'>
+$(document).ready(function() { 
+  
+  // <%# @sparql_queries.each do |sparql_query| %>
+  // 	var name = '<%#= sparql_query.name %>';
+  // 	var query = '<%#= sparql_query.query %>';
+  // 	var selector ='#menu';
+  //   var queryResponse = ['?object'];
+  // 	buildMenu(name, query, selector, queryResponse);
+  // <%# end %>
 
-<%#= javascript_include_tag "proj4js" %>
-<%#= javascript_include_tag "OpenLayers/OpenLayers" %>
-<%#= javascript_include_tag "Openlayers/Openlayers.debug" %>
-<%#= javascript_include_tag "home.map" %>
-<%#= javascript_include_tag "home.queries" %>
-<%#= javascript_include_tag "home.index" %>
+  var query = '<%= j @sparql_queries.first.query.squish.html_safe %>';
+  var endpoint = '<%= j @sparql_queries.first.sparqlEndpoint.endpoint %>';
+  submitQuery(query, endpoint);
+});
+</script>

@@ -50,3 +50,6 @@ gem 'devise'
 gem 'codemirror-rails', '~> 5.6'
 
 gem 'bootstrap_form'
+
+# add so that document.ready works
+#gem 'jquery-turbolinks'

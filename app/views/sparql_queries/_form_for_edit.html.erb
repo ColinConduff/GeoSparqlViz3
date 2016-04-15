@@ -1,10 +1,10 @@
-<%= bootstrap_form_for(@sparql_query) do |f| %>
-  <% if @sparql_query.errors.any? %>
+<%= bootstrap_form_for(sparql_query) do |f| %>
+  <% if sparql_query.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@sparql_query.errors.count, "error") %> prohibited this sparql_query from being saved:</h2>
+      <h2><%= pluralize(sparql_query.errors.count, "error") %> prohibited this sparql_query from being saved:</h2>
 
       <ul>
-      <% @sparql_query.errors.full_messages.each do |msg| %>
+      <% sparql_query.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
       <% end %>
       </ul>
@@ -18,7 +18,7 @@
     <%= f.text_area :query, class:"form-control"%>
   </div>
   <div class="form-group">
-    <%= f.collection_select(:sparql_endpoint_id, @sparql_endpoints, :id, :name, {prompt: "Select a sparql endpoint"}) %>
+    <%= f.collection_select(:sparql_endpoint_id, sparql_endpoints, :id, :name, {prompt: "Select a sparql endpoint"}) %>
   </div>
 
   <div class="form-actions">

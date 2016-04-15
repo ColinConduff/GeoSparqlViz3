@@ -1,16 +1,8 @@
 Rails.application.routes.draw do
-  resources :sparql_endpoints
-  resources :sparql_endpoints
-  resources :sparql_queries
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
   
-  # creates browse_path
-  # used by devise after log in
-  # get '/browser' => 'browser#index', as: :browser
-  # get '/visualizer' => 'visualizer#index', as: :visualizer 
-
   # You can have the root of your site routed with "root"
   root to: 'welcome#index'
 
@@ -19,7 +11,9 @@ Rails.application.routes.draw do
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
+  
+  get '/visualizer/:id' => 'visualizer#index', as: :visualizer
+  
   # Example resource route (maps HTTP verbs to controller actions automatically):
   resources :sparql_endpoints, controller: 'sparql_endpoints'
   resources :sparql_queries, controller: 'sparql_queries'

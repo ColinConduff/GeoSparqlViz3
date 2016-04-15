@@ -5,6 +5,5 @@
 //= require proj4js
 //= require OpenLayers/OpenLayers
 //= require OpenLayers/OpenLayers.debug
-//= require home/map
-//= require home/queries
-//= require home/eventHandling
+//= require visualizer/map
+//= require visualizer/guiBuilder

@@ -85,7 +85,9 @@ class SparqlQueriesController < ApplicationController
       @redirect_target = sparql_queries_url
     end
 
-    # currently set to cascade on delete
+    ######################################
+    # currently set to cascade on delete #
+    ######################################
     
     # if deleting an intermedidate query, 
     # update parent_query_id for child queries
