@@ -4,36 +4,74 @@
 <%# end %>
 
 <div class="row">
-  <div class="col-lg-6 col-xs-12 sideBar">
+  <div class="col-lg-4 col-xs-12 sideBar">
     <div class="well">
     	<%#= render "left" %>
     	<span id="menu"></span>
     </div>
   </div>
   
-  <div class="col-lg-6 col-xs-12 mapOuterDiv">
-    <div class="well"><%= render "right" %></div>
+  <div class="col-lg-8 col-xs-12 mapOuterDiv">
+    <%= render "right" %>
   </div>
 </div>
 
-
-<%= javascript_include_tag 'manifest/home', 'data-turbolinks-track' => false %>
-
-<%#= javascript_include_tag "" %>
+<%= javascript_include_tag 'visualizerManifest', 'data-turbolinks-track' => false %>
 
 <script type='text/javascript'>
-$(document).ready(function() { 
-  
-  // <%# @sparql_queries.each do |sparql_query| %>
-  // 	var name = '<%#= sparql_query.name %>';
-  // 	var query = '<%#= sparql_query.query %>';
-  // 	var selector ='#menu';
-  //   var queryResponse = ['?object'];
-  // 	buildMenu(name, query, selector, queryResponse);
-  // <%# end %>
+var ready = function() {
 
-  var query = '<%= j @sparql_queries.first.query.squish.html_safe %>';
-  var endpoint = '<%= j @sparql_queries.first.sparqlEndpoint.endpoint %>';
-  submitQuery(query, endpoint);
-});
+  // var sparqlObjects = [
+  //   {
+  //     queryName: undefined,
+  //     originalQuery: undefined,
+  //     cleanedQuery: undefined,
+  //     endpointName: undefined,
+  //     endpoint: undefined,
+  //     menuSelector: undefined,
+  //     menuGroupSelector: undefined,
+  //     submitBtnSelector: undefined,
+  //     nodes : [
+  //       {
+  //         menuSelectorID: undefined,
+  //         substring: undefined,
+  //         domType: undefined,
+  //         parsedArguments: undefined,
+  //         dataToInsert: undefined
+  //       }
+  //     ]
+  //   }
+  // ];
+
+  var sparqlObjects = [];
+  var queryResponses = [];
+  var menuGroupSelectorID = 0;
+
+  <% @sparql_queries.each do |sparql_query| %>
+
+    var sparqlObject = {
+      queryName: '<%= sparql_query.name %>',
+      originalQuery: '<%= j sparql_query.query.squish.html_safe %>',
+      cleanedQuery: undefined,
+      endpointName: '<%= j sparql_query.sparqlEndpoint.name %>',
+      endpoint: '<%= j sparql_query.sparqlEndpoint.endpoint %>',
+      menuSelector: '#menu',
+      menuGroupSelector: 'menuGroup'+menuGroupSelectorID,
+      submitBtnSelector: 'btn'+menuGroupSelectorID,
+      nodes: []
+    }
+
+    sparqlObjects.push(sparqlObject);
+    menuGroupSelectorID++;
+  <% end %>
+
+  console.log("before buildMenu");
+  console.log(sparqlObjects);
+  
+  buildMenu(sparqlObjects, queryResponses);
+  console.log("after buildMenu");
+  console.log(sparqlObjects);
+}
+$(document).ready(ready);
+$(document).on('page:load', ready);
 </script>

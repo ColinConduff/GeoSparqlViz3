@@ -10,27 +10,6 @@ Rails.application.config.assets.version = '1.0'
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 # Rails.application.config.assets.precompile += %w( search.js )
 
-# Rails.application.config.assets.precompile += %w( codeMirrorHopscotch.css )
+Rails.application.config.assets.precompile += %w( sparqlManifest.js )
+Rails.application.config.assets.precompile += %w( visualizerManifest.js )
 
-Rails.application.config.assets.precompile += %w( manifest/welcome.js )
-Rails.application.config.assets.precompile += %w( manifest/home.js )
-Rails.application.config.assets.precompile += %w( manifest/sparqlQueries/form.js )
-Rails.application.config.assets.precompile += %w( manifest/sparqlQueries/general.js )
-Rails.application.config.assets.precompile += %w( manifest/sparqlQueries/showAll.js )
-Rails.application.config.assets.precompile += %w( manifest/sparqlQueries/showOne.js )
-# Rails.application.config.assets.precompile += %w( jquery.js )
-# Rails.application.config.assets.precompile += %w( bootstrap.js )
-# Rails.application.config.assets.precompile += %w( proj4js.js )
-# Rails.application.config.assets.precompile += %w( OpenLayers/OpenLayers.js )
-# Rails.application.config.assets.precompile += %w( OpenLayers/OpenLayers.debug.js )
-# Rails.application.config.assets.precompile += %w( jquery.simplePagination.js )
-# Rails.application.config.assets.precompile += %w( codemirror.js )
-# Rails.application.config.assets.precompile += %w( codemirror/modes/sparql.js )
-
-# # Some of these may no longer be necessary
-# Rails.application.config.assets.precompile += %w( sparql_queries.form.js )
-# Rails.application.config.assets.precompile += %w( sparql_queries.index.js )
-
-# Rails.application.config.assets.precompile += %w( home.map.js )
-# Rails.application.config.assets.precompile += %w( home.index.js )
-# Rails.application.config.assets.precompile += %w( home.queries.js )

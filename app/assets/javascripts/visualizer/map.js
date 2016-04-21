@@ -82,6 +82,7 @@ function initializeMap() {
 
 $(document).ready(initializeMap);
 
+// query response must have data named wkt
 function parseFeaturesIntoArray(queryResult) {
 
     var features = [];
@@ -114,14 +115,7 @@ var bounds = new OpenLayers.Bounds();
 function findNewBounds(features) {
 
     for (i=0; i<features.length; ++i) {
-        // if(features[i].geometry == undefined) {
-        //     for (j=0; j<features[i].length; j++) {
-        //         bounds.extend(features[i][j].geometry.getBounds());
-        //     }
-        
-        // } else {
-            bounds.extend(features[i].geometry.getBounds()); 
-        //}
+        bounds.extend(features[i].geometry.getBounds()); 
     }
 }
 
@@ -189,107 +183,6 @@ function drawVectors(features, vectorLayerStyle) {
     selectControl.activate();
 }
 
-// function drawVectorsForFeatures(resultMsg, featureID, featureFillColor) {
-
-//     var features = parseFeaturesIntoArray(resultMsg);
-    
-//     // add layerID attribute to options in dropdown menus to enable 
-//     // selecting specific layers
-//     $('#featureResults1 > option[data-featureid="' + featureID + '"]').attr('data-layerid', features[0].id);
-//     $('#featureResults2 > option[data-featureid="' + featureID + '"]').attr('data-layerid', features[0].id);
-
-//     // create style object for features 
-//     var style = new OpenLayers.StyleMap({
-//         "default":new OpenLayers.Style(OpenLayers.Util.applyDefaults({
-//             fillColor: featureFillColor,
-//             strokeColor:"black",
-//             graphicName:"circle",
-//             rotation:0,
-//             pointRadius:10
-//         }, OpenLayers.Feature.Vector.style["default"])),
-//         "select":new OpenLayers.Style(OpenLayers.Util.applyDefaults({
-//             fillColor:"yellow",
-//             strokeColor:"black",
-//             graphicName:"circle",
-//             rotation:0,
-//             pointRadius:10
-//         }, OpenLayers.Feature.Vector.style["select"])),
-//         "highlight":new OpenLayers.Style(OpenLayers.Util.applyDefaults({
-//             fillColor:"yellow",
-//             strokeColor:"black",
-//             graphicName:"circle",
-//             rotation:0,
-//             pointRadius:10
-//         }, OpenLayers.Feature.Vector.style["highlight"]))
-//     });
-
-//     drawVectors(features, style);
-// }
-
-// function drawVectorsForSpatialRelationshipQuery(resultMsg, spatialFillColor) {
-
-//     var features = parseFeaturesIntoArray(resultMsg);
-
-//     // specific style for spatial relationship query results 
-//     var style = new OpenLayers.StyleMap({
-//         "default":new OpenLayers.Style(OpenLayers.Util.applyDefaults({
-//             fillColor: spatialFillColor,
-//             strokeColor:"black",
-//             graphicName:"circle",
-//             rotation:0,
-//             pointRadius:10
-//         }, OpenLayers.Feature.Vector.style["default"])),
-//         "select":new OpenLayers.Style(OpenLayers.Util.applyDefaults({
-//             fillColor:"yellow",
-//             strokeColor:"black",
-//             graphicName:"circle",
-//             rotation:0,
-//             pointRadius:10
-//         }, OpenLayers.Feature.Vector.style["select"])),
-//         "highlight":new OpenLayers.Style(OpenLayers.Util.applyDefaults({
-//             fillColor:"yellow",
-//             strokeColor:"black",
-//             graphicName:"circle",
-//             rotation:0,
-//             pointRadius:10
-//         }, OpenLayers.Feature.Vector.style["highlight"]))
-//     });
-
-//     drawVectors(features, style);
-// }
-
-// function drawVectorsForBinaryRelationshipQuery(resultMsg, binaryFillColor) {
-
-//     var features = parseFeaturesIntoArray(resultMsg);
-
-//     // specific style for binary relationship query results 
-//     var style = new OpenLayers.StyleMap({
-//         "default":new OpenLayers.Style(OpenLayers.Util.applyDefaults({
-//             fillColor: binaryFillColor,
-//             strokeColor:"black",
-//             graphicName:"circle",
-//             rotation:0,
-//             pointRadius:10
-//         }, OpenLayers.Feature.Vector.style["default"])),
-//         "select":new OpenLayers.Style(OpenLayers.Util.applyDefaults({
-//             fillColor:"yellow",
-//             strokeColor:"black",
-//             graphicName:"circle",
-//             rotation:0,
-//             pointRadius:10
-//         }, OpenLayers.Feature.Vector.style["select"])),
-//         "highlight":new OpenLayers.Style(OpenLayers.Util.applyDefaults({
-//             fillColor:"yellow",
-//             strokeColor:"black",
-//             graphicName:"circle",
-//             rotation:0,
-//             pointRadius:10
-//         }, OpenLayers.Feature.Vector.style["highlight"]))
-//     });
-
-//     drawVectors(features, style);
-// }
-
 function parseFeaturesAndDrawVectors(msg)
 {   
     var style = new OpenLayers.StyleMap({
@@ -318,5 +211,4 @@ function parseFeaturesAndDrawVectors(msg)
     
     var features = parseFeaturesIntoArray(msg);
     drawVectors(features, style);
-    //updateTable(msg, "tableWrap");
 }
