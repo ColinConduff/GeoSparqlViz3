@@ -1,4 +1,6 @@
 
+<p id="notice"><%= notice %></p>
+
 <div class="text-center">
   <h1>Browse Sparql Queries</h1>
 </div>
@@ -44,26 +46,13 @@
                   </div>
                 </div>
               </td>
-              <!-- <td>
-                <%#= link_to edit_sparql_query_path(sparql_query) do %>
-                  <button class="btn btn-info">
-                    Edit
-                  </button>
-                <%# end %>
-              </td>
-              <td>
-                <%#= link_to sparql_query, method: :delete,
-                  data: { confirm: 'Are you sure?' } do %>
-                  <button class="btn btn-danger">Delete!</button>
-                <%# end %>
-              </td> -->
           </tr>
         <% end %>
       </table>
-      <div class="panel-footer text-center">
+      <!-- <div class="panel-footer text-center">
         Add pagination
-      <!-- <div id="pagination1"></div> -->
-      </div>
+        <div id="pagination1"></div>
+      </div> -->
     </div>
     
   </div>
@@ -72,7 +61,7 @@
 
     <div class="panel panel-default">
       <div class="panel-heading text-center"><h4>Other Users' Sparql Queries</h4></div>
-      <div class="panel-body">
+      <!-- <div class="panel-body">
         <div class="col-xs-6 text-center">
           <div class="form-inline">
             <div class="form-group">
@@ -80,7 +69,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <table class="table" id="otherQueryData">
         <% @other_users_sparql_queries.each do |sparql_query| %>
@@ -88,13 +77,20 @@
               <td class="text-center">
                 <h5><%= link_to sparql_query.name, sparql_query %></h5>
               </td>
+              <td class="col-xs-2">
+                <%= link_to visualizer_url(id: sparql_query.id) do %>
+                  <button class="btn btn-default btn-xs">
+                    Visualize
+                  </button>
+                <% end %>
+              </td>
           </tr>
         <% end %>
       </table>
-      <div class="panel-footer text-center">
+     <!--  <div class="panel-footer text-center">
         Add pagination
-        <!-- <div id="pagination2"></div> -->
-      </div>
+        <div id="pagination2"></div> 
+      </div> -->
     </div>
 
       

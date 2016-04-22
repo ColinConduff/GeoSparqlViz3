@@ -6,6 +6,7 @@ class SparqlEndpointsController < ApplicationController
   # GET /sparql_endpoints.json
   def index
     @sparql_endpoints = SparqlEndpoint.joins(:user).where('user_id = ?', current_user)
+    @other_users_sparql_endpoints = SparqlEndpoint.joins(:user).where('user_id != ?', current_user)
   end
 
   # GET /sparql_endpoints/1
@@ -30,7 +31,7 @@ class SparqlEndpointsController < ApplicationController
 
     respond_to do |format|
       if @sparql_endpoint.save
-        format.html { redirect_to @sparql_endpoint, notice: 'Sparql endpoint was successfully created.' }
+        format.html { redirect_to sparql_endpoints_path, notice: 'Sparql endpoint was successfully created.' }
         format.json { render :show, status: :created, location: @sparql_endpoint }
       else
         format.html { render :new }
@@ -44,7 +45,7 @@ class SparqlEndpointsController < ApplicationController
   def update
     respond_to do |format|
       if @sparql_endpoint.update(sparql_endpoint_params)
-        format.html { redirect_to @sparql_endpoint, notice: 'Sparql endpoint was successfully updated.' }
+        format.html { redirect_to sparql_endpoints_path, notice: 'Sparql endpoint was successfully updated.' }
         format.json { render :show, status: :ok, location: @sparql_endpoint }
       else
         format.html { render :edit }

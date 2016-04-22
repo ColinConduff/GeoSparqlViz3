@@ -56,10 +56,10 @@ function addNodesToQueryObject(sObj) {
 }
 
 function createHTMLElements(sObj) {
-  $(sObj.menuSelector).append('<div id="' + sObj.menuGroupSelector + '"></div>');
+  $(sObj.menuSelector).append('<div class="well" id="' + sObj.menuGroupSelector + '"></div>');
   
   var selector = '#'+sObj.menuGroupSelector;
-  $(selector).append('<h4>' + sObj.queryName + '</h4>');
+  $(selector).append('<h4 class="text-center">' + sObj.queryName + '</h4>');
 
   for(var i = 0; i < sObj.nodes.length; i++) {
     var node = sObj.nodes[i];
@@ -129,9 +129,12 @@ function createHTMLElements(sObj) {
       // the li elements for the dropdown menu are populated after 
       // a previous query has been submitted, see the function addDataToDropdown below
       var data = '<div class="dropdown" id="'+ node.menuSelectorID +'">';
-      data +=      '<button class="btn btn-default dropdown-toggle" type="button" id="'+ node.menuSelectorID +'temp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">';
-      data +=        '<span id='+node.innerSpanID+'>Select an item</span>';
-      data +=        '<span class="caret"></span>';
+      data +=      '<button class="btn btn-default btn-block dropdown-toggle" type="button" id="'+ node.menuSelectorID +'temp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">';
+      data +=        '<div class="row">';
+      data +=          '<div class="col-xs-10">';
+      data +=            '<span id='+node.innerSpanID+'>Select an item</span></div>';
+      data +=          '<div class="col-xs-2">';
+      data +=            '<span class="caret"></span></div></div>';
       data +=      '</button>'; 
       data +=      '<ul class="dropdown-menu" id="'+node.ulID+'" aria-labelledby="'+ node.menuSelectorID +'temp"></ul>';
       data +=    '</div>';
@@ -155,7 +158,7 @@ function createHTMLElements(sObj) {
     }
   }
 
-  $(selector).append('<button class="btn btn-default" id="'+sObj.submitBtnSelector+'">Submit Query</h3>');
+  $(selector).append('<button class="btn btn-default btn-block" id="'+sObj.submitBtnSelector+'">Submit Query</h3>');
 }
 
 function createClickSubmitQueryEvent(currentSparqlObject, nextSparqlObject, queryResponses) {
@@ -288,6 +291,7 @@ function addNavTab(sObj, msg) {
   console.log(sObj.cleanedQuery);
 
   var tabID = 'tabID' + globalIDCounter;
+  var codeMirrorAreaID = 'codeMirrorAreaID'+globalIDCounter;
   globalIDCounter++;
   var navULselector = '#navTabUL';
   var navTabPanelDivSelector = '#navTabPanelDiv';
@@ -300,18 +304,20 @@ function addNavTab(sObj, msg) {
   var navPanel = '<div role="tabpanel" class="tab-pane" id="'+tabID+'">';
 
   navPanel += '<div class="panel panel-default">';
-  navPanel +=   '<div class="panel-heading">'+sObj.queryName+'</div>';
+  navPanel +=   '<div class="panel-heading text-center">'+sObj.queryName+'</div>';
   navPanel +=   '<div class="panel-body">';
-  navPanel +=     '<p>'+sObj.cleanedQuery+'</p>';
+  navPanel +=     '<textarea id="'+codeMirrorAreaID+'">'+sObj.cleanedQuery+'</textarea>';
   navPanel +=   '</div>';
   navPanel +=   '<table class="table">';
 
   navPanel += '<tr>';
   for(var i = 0; i < msg.head.vars.length; i++) {
     var key = msg.head.vars[i];
-    navPanel += '<th>';
-    navPanel +=    key;
-    navPanel += '</th>';
+    if(key != 'wkt') {
+      navPanel += '<th class="text-center">';
+      navPanel +=    key;
+      navPanel += '</th>';
+    }
   }
   navPanel += '</tr>';
   
@@ -321,7 +327,9 @@ function addNavTab(sObj, msg) {
     var resObject = msg.results.bindings[i];
     for(var j = 0; j < msg.head.vars.length; j++) {
       var column = msg.head.vars[j];
-      navPanel += '<td>'+resObject[column].value+'</td>';
+      if(column != 'wkt') {
+        navPanel += '<td>'+resObject[column].value+'</td>';
+      }
     }
 
     navPanel += '</tr>';
@@ -329,7 +337,19 @@ function addNavTab(sObj, msg) {
   navPanel +=   '</table>';
   navPanel += '</div></div>';
   $(navTabPanelDivSelector).append(navPanel);
+  initCodeMirror(codeMirrorAreaID);
 }
+
+var initCodeMirror = function(codeMirrorAreaID) { 
+  $('#'+codeMirrorAreaID).each(function() {
+    var editor = CodeMirror.fromTextArea($(this).get(0), {
+      lineNumbers: true,
+      theme: "hopscotch",
+      mode: "sparql"
+    });
+    setTimeout(function() { editor.refresh() },1);
+  });
+};
 
 var contains = function(needle) {
   // Per spec, the way to identify NaN is that it is not equal to itself

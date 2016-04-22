@@ -1,10 +1,15 @@
 
 
-<h1>Editing Sparql Endpoint</h1>
+<div class="well"><h1 class="text-center">Editing Sparql Endpoint</h1></div>
 
-<%= render 'form' %>
+<div class="well"><%= render 'form' %></div>
 
-<%= link_to 'Show', @sparql_endpoint %> |
-<%= link_to 'Back', sparql_endpoints_path %>
+<%#= link_to 'Back', sparql_endpoints_path %>
+
+<div class="well">
+	<%= link_to @sparql_endpoint, method: :delete, data: { confirm: 'Are you sure?' } do %>
+	    <button class="btn btn-danger btn-block">Delete!</button>
+	<% end %>
+</div>
 
 <%= javascript_include_tag 'manifest/sparqlQueries/general', 'data-turbolinks-track' => false %>

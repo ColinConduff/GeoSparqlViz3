@@ -1,13 +1,12 @@
-// $('document').ready(function() {
-
-// 	function initializeSelectPicker() {
-// 		$('.selectpicker').selectpicker({width: '100%'});
-// 	}
-
-// 	$.when(initializeSelectPicker()).done( function () {
-// 		//$('#parentQueryMenu').append("<option>http://www.lotico.com:3030/lotico/sparql</option>");
-// 		$('#parentQueryMenu').selectpicker('refresh');
-// 		$('#endpointMenu').selectpicker('refresh');
-// 	});
-	
-// });
+var initForm = function() { 
+    $("textarea").each(function() {
+      var editor = CodeMirror.fromTextArea($(this).get(0), {
+        lineNumbers: true,
+        theme: "hopscotch",
+        mode: "sparql"
+      });
+      setTimeout(function() { editor.refresh() },1);
+    });
+};
+$(document).ready(initForm);
+$(document).on('page:load', initForm);

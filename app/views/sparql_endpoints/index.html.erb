@@ -2,34 +2,81 @@
 
 <p id="notice"><%= notice %></p>
 
-<h1>Listing Sparql Endpoints</h1>
+<div class="text-center">
+  <h1>Browse Sparql Endpoints</h1>
+</div>
+<hr/>
 
-<table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div class="row">
+  <div class="col-xs-6">
+    <div class="panel panel-default">
+      <div class="panel-heading text-center"><h4>My Sparql Endpoints</h4></div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-3">
+            <%= link_to new_sparql_endpoint_path do %>
+              <button class="btn btn-primary btn-xs">
+                New Sparql Endpoint
+              </button>
+            <% end %>
+          </div>
+        </div>
+      </div>
 
-  <tbody>
-    <% @sparql_endpoints.each do |sparql_endpoint| %>
-      <tr>
-        <td><%= sparql_endpoint.name %></td>
-        <td><%= sparql_endpoint.endpoint %></td>
-        <td><%= link_to 'Show', sparql_endpoint %></td>
-        <td><%= link_to 'Edit', edit_sparql_endpoint_path(sparql_endpoint) %></td>
-        <td>
-          <%= link_to sparql_endpoint, method: :delete, data: { confirm: 'Are you sure?' } do %>
-            <button class="btn btn-danger">Delete!</button>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+      <table class="table">
+        <% @sparql_endpoints.each do |sparql_endpoint| %>
+          <tr id="queryRow">
+              <td class="text-center">
+                <div class="row">
+                  <div class="col-md-4 col-xs-12">
+                    <h5><%= link_to sparql_endpoint.name, edit_sparql_endpoint_path(sparql_endpoint) %></h5>
+                  </div>
+                  <div class="col-md-8 col-xs-12">
+                    <p><%= sparql_endpoint.endpoint %></p>
+                  </div>
+                </div>
+              </td>
+          </tr>
+        <% end %>
+      </table>
+      <!-- <div class="panel-footer text-center">
+        Add pagination
+      </div> -->
+    </div>
+    
+  </div>
 
-<br>
+  <div class="col-xs-6">
 
-<%= link_to 'New Sparql endpoint', new_sparql_endpoint_path %>
+    <div class="panel panel-default">
+      <div class="panel-heading text-center"><h4>Other Users' Sparql Endpoints</h4></div>
+      <!-- <div class="panel-body">
+        <div class="col-xs-6 text-center">
+          <div class="form-inline">
+            <div class="form-group">
+              <input type="text" class="form-control" id="searchBar" placeholder="Search">
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+      <table class="table" id="otherQueryData">
+        <% @other_users_sparql_endpoints.each do |sparql_endpoint| %>
+          <tr id="queryRow">
+            <td class="text-center">
+              <h5><%= link_to sparql_endpoint.name, sparql_endpoint %></h5>
+            </td>
+            <td class="col-xs-6">
+              <p><%= sparql_endpoint.endpoint %></p>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+     <!--  <div class="panel-footer text-center">
+        Add pagination
+      </div> -->
+    </div>
+  </div>
+</div>
 
 <%= javascript_include_tag 'manifest/sparqlQueries/general', 'data-turbolinks-track' => false %>
