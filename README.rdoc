@@ -1,30 +1,28 @@
 
 
-== GeoSparql Visualization Web Application
+== [GeoSparqlViz3](http://usgs-ybother.srv.mst.edu/geosparql/)
 
-This is version 3 of GeoSparqlViz.
+=== Overview
+ * Visualize and analyze linked geospatial data
+ * Create sparql queries and sparql endpoints
+ * Visualize Well-Known Text response data as map layers
+ * Use and create graphical user interfaces for querying linked data 
 
-This version includes user authentication, database/model capability for self-referential sparql queries, individual tables/models for queries and endpoints, etc.  
+===[wiki](https://github.com/ColinConduff/GeoSparqlViz3/wiki)
 
+=== Installation 
 
-The following documentation coming soon:
+    git clone https://github.com/ColinConduff/GeoSparqlViz3.git
+    
+    bundle install
 
-* Ruby version
+    rake db:migrate
 
-* System dependencies
+    rails server
 
-* Configuration
+=== Production Environment 
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+ * Red Hat 7
+ * Apache, Phusion Passenger
 
 <tt>rake doc:app</tt>.
