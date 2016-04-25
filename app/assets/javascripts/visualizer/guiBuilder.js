@@ -67,7 +67,7 @@ function createHTMLElements(sObj) {
 
       var placeholder = node.parsedArguments[1];
       var id = node.menuSelectorID;
-      $(selector).append('<div class="form-inline"><div class="form-group"><input type="text" class="form-control" id="'+ id +'" placeholder="' + placeholder + '"></div></div>');
+      $(selector).append('<div class="form-group"><input type="text" class="form-control" id="'+ id +'" placeholder="' + placeholder + '"></div>');
 
     } else if (node.domType === "dropdown") {
       node.ulID = 'ulSelector'+globalIDCounter;
