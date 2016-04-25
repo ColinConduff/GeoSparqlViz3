@@ -234,30 +234,22 @@ function getCleanQueryWithoutBracketStatements(sparqlObject) {
   
   for(var j = 0; j < sparqlObject.nodes.length; j++) {
     if(sparqlObject.nodes[j].domType === 'data') {
-      tempQueryString = tempQueryString.replace(sparqlObject.nodes[j].substring, '<'+sparqlObject.nodes[j].dataToInsert+'>');
+      tempQueryString = tempQueryString.replace(sparqlObject.nodes[j].substring, sparqlObject.nodes[j].dataToInsert);
     
     } else if(sparqlObject.nodes[j].domType === 'dropdown') {
       tempQueryString = tempQueryString.replace(sparqlObject.nodes[j].substring, sparqlObject.nodes[j].dataToInsert);
     
     } else if(sparqlObject.nodes[j].domType === 'radio') {
       var dataToInsertFromRadioGroup = $('#'+sparqlObject.nodes[j].menuSelectorID+" input:radio:checked").val();
-      // console.log("dataToInsertFromRadioGroup");
-      // console.log(dataToInsertFromRadioGroup);
-
       tempQueryString = tempQueryString.replace(sparqlObject.nodes[j].substring, dataToInsertFromTextBox);
 
     } else if(sparqlObject.nodes[j].domType === 'text') {
       var dataToInsertFromTextBox = $('#'+sparqlObject.nodes[j].menuSelectorID).val();
-      // console.log("dataToInsertFromTextBox");
-      // console.log(dataToInsertFromTextBox);
-
       tempQueryString = tempQueryString.replace(sparqlObject.nodes[j].substring, dataToInsertFromTextBox);
     }
   }
 
   sparqlObject.cleanedQuery = tempQueryString;
-  console.log("sparqlObject");
-  console.log(sparqlObject);
 }
 
 function addDataToDropdown(sparqlObject, queryResponses) {
@@ -287,8 +279,8 @@ function addDataToDropdown(sparqlObject, queryResponses) {
 }
 
 function addNavTab(sObj, msg) {
-  console.log("sObj.cleanedQuery");
-  console.log(sObj.cleanedQuery);
+  // console.log("sObj.cleanedQuery");
+  // console.log(sObj.cleanedQuery);
 
   var tabID = 'tabID' + globalIDCounter;
   var codeMirrorAreaID = 'codeMirrorAreaID'+globalIDCounter;
@@ -386,12 +378,12 @@ function submitQuery(currentSparqlObject, nextSparqlObject, queryResponses) {
     function ifSuccessfulDoThis(msg) { 
       queryResponses.push(msg);
 
-      console.log("currentSparqlObject.cleanedQuery");
-      console.log(currentSparqlObject.cleanedQuery);
+      // console.log("currentSparqlObject.cleanedQuery");
+      // console.log(currentSparqlObject.cleanedQuery);
       
       addNavTab(currentSparqlObject, msg);
-      console.log("queryResponses");
-      console.log(queryResponses);
+      // console.log("queryResponses");
+      // console.log(queryResponses);
 
       if(contains.call(msg.head.vars, 'wkt')) {
         parseFeaturesAndDrawVectors(msg);
