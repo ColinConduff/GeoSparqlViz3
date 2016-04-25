@@ -64,7 +64,7 @@
         <% @other_users_sparql_endpoints.each do |sparql_endpoint| %>
           <tr id="queryRow">
             <td class="text-center">
-              <h5><%= link_to sparql_endpoint.name, sparql_endpoint %></h5>
+              <h5><%= sparql_endpoint.name %></h5>
             </td>
             <td class="col-xs-6">
               <p><%= sparql_endpoint.endpoint %></p>
