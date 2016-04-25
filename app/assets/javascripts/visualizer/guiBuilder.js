@@ -320,7 +320,12 @@ function addNavTab(sObj, msg) {
     for(var j = 0; j < msg.head.vars.length; j++) {
       var column = msg.head.vars[j];
       if(column != 'wkt') {
-        navPanel += '<td>'+resObject[column].value+'</td>';
+        if(resObject[column].value.length < 1000) {
+          navPanel += '<td>'+resObject[column].value+'</td>';
+
+        } else {
+          navPanel += '<td>Too much data to show</td>';
+        }
       }
     }
 
