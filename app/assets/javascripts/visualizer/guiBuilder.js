@@ -278,17 +278,26 @@ function addDataToDropdown(sparqlObject, queryResponses) {
   }
 }
 
+function removeAllDataTabs(sparqlObjects) {
+  for(var i = 0; i < sparqlObjects.length; i++) {
+    $('#'+sparqlObjects[i].navListTabID).hide();
+  }
+}
+
 function addNavTab(sObj, msg) {
   // console.log("sObj.cleanedQuery");
   // console.log(sObj.cleanedQuery);
 
   var tabID = 'tabID' + globalIDCounter;
   var codeMirrorAreaID = 'codeMirrorAreaID'+globalIDCounter;
+  var navListTab = 'navTabLi'+globalIDCounter;
   globalIDCounter++;
+
+  sObj.navListTabID = navListTab;
   var navULselector = '#navTabUL';
   var navTabPanelDivSelector = '#navTabPanelDiv';
 
-  var navli = '<li role="presentation">';
+  var navli = '<li id="'+navListTab+'" role="presentation">';
   navli    +=   '<a href="#'+tabID+'" aria-controls="'+tabID+'" role="tab" data-toggle="tab">'+sObj.queryName+'</a>';
   navli    += '</li>';
   $(navULselector).append(navli);
@@ -355,23 +364,20 @@ var contains = function(needle) {
 
   if(!findNaN && typeof Array.prototype.indexOf === 'function') {
     indexOf = Array.prototype.indexOf;
+
   } else {
     indexOf = function(needle) {
       var i = -1, index = -1;
-
       for(i = 0; i < this.length; i++) {
         var item = this[i];
-
         if((findNaN && item !== item) || item === needle) {
           index = i;
           break;
         }
       }
-
       return index;
     };
   }
-
   return indexOf.call(this, needle) > -1;
 };
 

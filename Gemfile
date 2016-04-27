@@ -51,5 +51,7 @@ gem 'codemirror-rails'
 
 gem 'bootstrap_form'
 
-# add so that document.ready works
+# got document.ready to work without this gem
 #gem 'jquery-turbolinks'
+
+gem 'will_paginate'

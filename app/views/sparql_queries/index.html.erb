@@ -49,12 +49,10 @@
           </tr>
         <% end %>
       </table>
-      <!-- <div class="panel-footer text-center">
-        Add pagination
-        <div id="pagination1"></div>
-      </div> -->
+      <div class="panel-footer text-center">
+        <%= will_paginate @sparql_queries, :param_name => 'my_queries' %>
+      </div> 
     </div>
-    
   </div>
 
   <div class="col-xs-6">
@@ -87,13 +85,10 @@
           </tr>
         <% end %>
       </table>
-     <!--  <div class="panel-footer text-center">
-        Add pagination
-        <div id="pagination2"></div> 
-      </div> -->
+     <div class="panel-footer text-center">
+        <%= will_paginate @other_users_sparql_queries, :param_name => 'not_my_queries' %>
+      </div> 
     </div>
-
-      
     </div>
   </div>
 </div>

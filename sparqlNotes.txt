@@ -1,0 +1,266 @@
+
+#updated for http://usgs-ybother.srv.mst.edu/fuseki/NHD/query
+
+# get all feature types
+SELECT distinct ?object
+WHERE {
+  ?subject a ?object
+}
+
+# get all feature relationships for selected feature type
+# <http://cegis.usgs.gov/rdf/gu#countyOrEquivalent>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+SELECT DISTINCT ?rel 
+WHERE { 
+?feature rdf:type <http://cegis.usgs.gov/rdf/trans#airportPoint> ; 
+ ?rel ?obj . 
+}
+
+# get feature name and wkt data
+# <http://cegis.usgs.gov/rdf/gu#countyName>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?feature ?name ?wkt
+WHERE { 
+  # Select features of the specified type: 
+  ?feature rdf:type <http://cegis.usgs.gov/rdf/trans#airportPoint> . 
+  
+  # can't use name, it changes for each feature type
+  #?feature <http://cegis.usgs.gov/rdf/trans#name> ?name . 
+   
+  ?feature <http://www.opengis.net/rdf#hasGeometry> ?g.
+  ?g <http://www.opengis.net/rdf#asWKT> ?wkt
+}
+
+Prefixes 
+Select 
+Where 
+Filter
+Limit 
+Order by
+
+# example 1
+## feature 1
+airportPoint
+rdf-schema#label
+airport
+
+## feature 2
+countyOrEquivalent
+rdf-schema#label
+au
+select Augusta
+
+## Spatial Relationship
+all feature 1
+SF: Within
+Augusta
+
+
+# Find all of the types of the available features 
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+SELECT DISTINCT ?type 
+WHERE { 
+ ?feature rdf:type ?type . 
+} 
+
+# Populate a dropdown list of types from the results of the query above
+
+# Find all of the features of the selected type
+# return all of the relationships between those features and to some objects
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+SELECT DISTINCT ?rel 
+WHERE { 
+?feature rdf:type <http://cegis.usgs.gov/rdf/trans/airportPoint> ; 
+ ?rel ?obj . 
+} 
+
+# Find all of the features of the selected type
+# Find all of the labels associated with those features
+# Use the selected relationship (?rel) from above to find all features with that relationship to an object
+# Filter the results using the text from the search bar ("airport")
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?feature ?label 
+WHERE { 
+  # Select features of the specified type: 
+  ?feature rdf:type <http://cegis.usgs.gov/rdf/trans/airportPoint> . 
+  ?feature rdfs:label ?label . 
+  # Filter features by property: 
+  ?feature <http://www.w3.org/2000/01/rdf-schema#label> ?obj .
+  FILTER( regex(str(?obj), "airport", "i" ) ) . 
+}
+
+# Use the returned features to get their associated well-known text data (?wkt)
+PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+SELECT ?wkt 
+WHERE { 
+   <http://cegis.usgs.gov/rdf/trans/Features/VA000145> geo:hasGeometry ?g . 
+   ?g geo:asWKT ?wkt . 
+} 
+
+# experimental query, not used 
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+SELECT DISTINCT ?feature ?label ?wkt
+WHERE { 
+  # Select features of the specified type: 
+  ?feature rdf:type <http://cegis.usgs.gov/rdf/trans/airportPoint> . 
+  ?feature rdfs:label ?label . 
+  
+  # Filter features by property: 
+  ?feature <http://www.w3.org/2000/01/rdf-schema#label> ?obj .
+  FILTER( regex(str(?obj), "airport", "i" ) ) . 
+
+  ?feature geo:hasGeometry ?g . 
+  ?g geo:asWKT ?wkt .
+}
+
+# Return all of the attributes related to a feature (occurs when double clicking feature)
+SELECT ?rel ?obj 
+WHERE { 
+   <http://cegis.usgs.gov/rdf/trans/Features/VA000106> ?rel ?obj . 
+} 
+
+# Spatial relationship
+# Use returned features to query for feature's wkt to use when drawing new map layers
+# sfWithin, sfEquals, sfContains, sfDisjoint, sfIntersects, sfOverlaps, sfTouches
+# ehEquals, ehDisjoint, ehMeet, ehOverlap, ehCovers, ehCoverdBy, ehInside, ehContains
+
+PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+PREFIX geof: <http://www.opengis.net/def/function/geosparql/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX units: <http://www.opengis.net/def/uom/OGC/1.0/>
+SELECT DISTINCT ?feature ?label 
+WHERE {
+
+ # Feature 1: 
+  # Select features of the specified type: 
+  ?feature rdf:type <http://cegis.usgs.gov/rdf/trans/airportPoint> . 
+  ?feature rdfs:label ?label .
+  # Filter features by property:
+  ?feature <http://www.w3.org/2000/01/rdf-schema#label> ?obj1 .
+  FILTER( regex(str(?obj1), "airport", "i" ) ) .
+  ?feature geo:hasGeometry ?g1 .
+  ?g1 geo:asWKT ?wkt1 .
+
+ # Feature 2: 
+  <http://cegis.usgs.gov/rdf/gu/Features/1480098> geo:hasGeometry ?g2 . 
+  ?g2 geo:asWKT ?wktf2 . 
+  BIND(?wktf2 AS ?wkt2) .
+
+ # spatial relationship 
+  FILTER (geof:sfWithin(?wkt1, ?wkt2)) .
+}
+
+
+################################################################################################
+
+# example 2
+## Feature 1
+incorporatedPlace
+rdf-schema#label
+Wa
+buffer 5000 mi
+
+## feature 2
+countyOrEquivalent
+rdf-schema#label
+au
+select Augusta
+
+## binary spatial operation
+Waynesboro 
+intersection
+Augusta
+
+# same as above except 
+# Do this to create the intersection map layer
+# Can replace intersection with union, difference, symDifference
+PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+PREFIX geof: <http://www.opengis.net/def/function/geosparql/>
+PREFIX units: <http://www.opengis.net/def/uom/OGC/1.0/>
+SELECT ?wkt 
+WHERE { 
+   <http://cegis.usgs.gov/rdf/gu/Features/1498443> geo:hasGeometry ?g1 . 
+   ?g1 geo:asWKT ?wkt1f . 
+     BIND(?wkt1f AS ?wkt1) . 
+   <http://cegis.usgs.gov/rdf/gu/Features/1480098> geo:hasGeometry ?g2 . 
+   ?g2 geo:asWKT ?wkt2f . 
+     BIND(?wkt2f AS ?wkt2) . 
+   BIND(geof:intersection(?wkt1, ?wkt2) AS ?wkt) .
+}
+
+# for distance 
+PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+PREFIX geof: <http://www.opengis.net/def/function/geosparql/>
+PREFIX units: <http://www.opengis.net/def/uom/OGC/1.0/>
+SELECT ?distance
+WHERE { 
+   <http://cegis.usgs.gov/rdf/gu/Features/1498443> geo:hasGeometry ?g1 . 
+   ?g1 geo:asWKT ?wkt1 . 
+   <http://cegis.usgs.gov/rdf/gu/Features/1480098> geo:hasGeometry ?g2 . 
+   ?g2 geo:asWKT ?wkt2 . 
+   BIND(geof:distance(?wkt1, ?wkt2, units:metre) AS ?distance) . 
+}
+
+# buffer example 
+PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+PREFIX geof: <http://www.opengis.net/def/function/geosparql/>
+PREFIX units: <http://www.opengis.net/def/uom/OGC/1.0/>
+SELECT ?wkt 
+WHERE { 
+   <http://cegis.usgs.gov/rdf/gu/Features/1498443> geo:hasGeometry ?g1 . 
+   ?g1 geo:asWKT ?wktf . 
+     BIND(geof:buffer(?wktf, 1000, units:metre) AS ?wkt) .
+}
+
+# boundary example
+PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+PREFIX geof: <http://www.opengis.net/def/function/geosparql/>
+PREFIX units: <http://www.opengis.net/def/uom/OGC/1.0/>
+SELECT ?wkt 
+WHERE { 
+   <http://cegis.usgs.gov/rdf/gu/Features/1498443> geo:hasGeometry ?g1 . 
+   ?g1 geo:asWKT ?wktf . 
+     BIND(geof:boundary(?wktf) AS ?wkt) .
+}
+
+
+----------------------------------------------------------------------------
+
+# list roman antiquities 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX spatial: <http://data.ordnancesurvey.co.uk/ontology/spatialrelations/>
+PREFIX gaz: <http://data.ordnancesurvey.co.uk/ontology/50kGazetteer/>
+
+SELECT ?uri ?label ?easting ?northing ?one ?twenty ?map 
+WHERE {
+  ?uri 
+    #filter on type
+    gaz:featureType gaz:RomanAntiquity;
+
+    #bind everything we want to return
+    rdfs:label ?label;
+    spatial:easting ?easting;
+    spatial:northing ?northing;
+    spatial:oneKMGridReference ?one;
+    spatial:twentyKMGridReference ?twenty;
+    gaz:mapReference ?map.    
+}
+LIMIT 10
+
+# geonames sparql endpoint
+# get all features of type airport 
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?feature ?lat ?lon ?name
+WHERE { 
+  ?feature rdf:type <http://www.lotico.com/ontology/Airport>.
+  ?feature <http://www.w3.org/2003/01/geo/wgs84_pos#lat> ?lat.    
+  ?feature <http://www.w3.org/2003/01/geo/wgs84_pos#long> ?lon.
+  ?feature <http://www.geonames.org/ontology#name> ?name.
+} 
+limit 25

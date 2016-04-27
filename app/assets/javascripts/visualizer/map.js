@@ -1,52 +1,57 @@
+
+// global variables 
 var map;
 var selectControl;
 var vectorLayers = [];
-var toggleFullScreenMapBtnClicked = false;
 
-$('.firstItemInactive').html('<span class="glyphicon glyphicon-search"></span>');
-$('.firstItemActive').html('<span class="glyphicon glyphicon-search"></span>');
+// $('.firstItemInactive').html('<span class="glyphicon glyphicon-search"></span>');
+// $('.firstItemActive').html('<span class="glyphicon glyphicon-search"></span>');
 
-$('<button />', {
-  class: 'firstItemInactive',
-  type: 'button',
-  html: '<span class="glyphicon glyphicon-arrow-left"></span>'
-});
+// $('<button />', {
+//   class: 'firstItemInactive',
+//   type: 'button',
+//   html: '<span class="glyphicon glyphicon-arrow-left"></span>'
+// });
 
-function toggleFullScreenMapBtn() { 
-    if(toggleFullScreenMapBtnClicked == false) {
-        $('.sideBar').hide();
-        $('.mapOuterDiv').removeClass('col-lg-6');
-        map.updateSize();
-        toggleFullScreenMapBtnClicked = true;
+// This was used to toggle the size of the map
+// See css for Panel1
 
-    } else {
-        $('.sideBar').show();
-        $('.mapOuterDiv').addClass('col-lg-6');
-        map.updateSize();
-        toggleFullScreenMapBtnClicked = false;
-    }
-}
+// var toggleFullScreenMapBtnClicked = false;
+// function toggleFullScreenMapBtn() { 
+//     if(toggleFullScreenMapBtnClicked == false) {
+//         $('.sideBar').hide();
+//         $('.mapOuterDiv').removeClass('col-lg-6');
+//         map.updateSize();
+//         toggleFullScreenMapBtnClicked = true;
+
+//     } else {
+//         $('.sideBar').show();
+//         $('.mapOuterDiv').addClass('col-lg-6');
+//         map.updateSize();
+//         toggleFullScreenMapBtnClicked = false;
+//     }
+// }
 
 function initializeMap() {
 
     var maxExtent = new OpenLayers.Bounds(-20037508, -20037508, 20037508, 20037508),
         restrictedExtent = maxExtent.clone();
     
-    var panel = new OpenLayers.Control.Panel({ displayClass: 'Panel1' });
-    panel.addControls([
-        new OpenLayers.Control.Button({
-            displayClass: 'first', 
-            trigger: toggleFullScreenMapBtn, 
-            title: 'Button is to be clicked'
-        })
-    ]);
+    // var panel = new OpenLayers.Control.Panel({ displayClass: 'Panel1' });
+    // panel.addControls([
+    //     new OpenLayers.Control.Button({
+    //         displayClass: 'first', 
+    //         trigger: toggleFullScreenMapBtn, 
+    //         title: 'Button is to be clicked'
+    //     })
+    // ]);
 
     map = new OpenLayers.Map({
         div: 'map', 
         controls: [
             new OpenLayers.Control.PanZoomBar(),
-            new OpenLayers.Control.LayerSwitcher(),
-            panel
+            new OpenLayers.Control.LayerSwitcher()//,
+            //panel
         ],
         projection: new OpenLayers.Projection('EPSG:900913'),
         displayProjection: new OpenLayers.Projection('EPSG:4326'),

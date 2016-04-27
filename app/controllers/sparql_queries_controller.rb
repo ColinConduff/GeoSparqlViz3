@@ -6,8 +6,8 @@ class SparqlQueriesController < ApplicationController
   # GET /sparql_queries.json
   def index
     # current user's root sparql queries
-    @sparql_queries = SparqlQuery.joins(:user).where('user_id = ? AND parent_query_id IS NULL', current_user)
-    @other_users_sparql_queries = SparqlQuery.joins(:user).where('user_id != ? AND parent_query_id IS NULL', current_user)
+    @sparql_queries = SparqlQuery.joins(:user).where('user_id = ? AND parent_query_id IS NULL', current_user).order('updated_at DESC').page(params[:my_queries]).per_page(15)
+    @other_users_sparql_queries = SparqlQuery.joins(:user).where('user_id != ? AND parent_query_id IS NULL', current_user).order('updated_at DESC').page(params[:not_my_queries]).per_page(15)
   end
 
   # GET /sparql_queries/1
@@ -18,21 +18,19 @@ class SparqlQueriesController < ApplicationController
 
     # used for new query form
     @sparql_query = SparqlQuery.new
+    @sparql_endpoint = SparqlEndpoint.new
     @sparql_endpoints = SparqlEndpoint.joins(:user).where('user_id = ?', current_user)
-    #@parent_queries = SparqlQuery.joins(:user).where('user_id = ?', current_user)
   end
 
   # GET /sparql_queries/new
   def new
     @sparql_query = SparqlQuery.new
     @sparql_endpoints = SparqlEndpoint.joins(:user).where('user_id = ?', current_user)
-    #@parent_queries = SparqlQuery.joins(:user).where('user_id = ?', current_user)
   end
 
   # GET /sparql_queries/1/edit
   def edit
     @sparql_endpoints = SparqlEndpoint.joins(:user).where('user_id = ?', current_user)
-    #@parent_queries = SparqlQuery.joins(:user).where('user_id = ?', current_user)
   end
 
   # POST /sparql_queries

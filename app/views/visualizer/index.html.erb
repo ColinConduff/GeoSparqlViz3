@@ -6,7 +6,15 @@
 <div class="row">
   <div class="col-lg-4 col-xs-12 sideBar">
     	<%#= render "left" %>
-    	<span id="menu"></span>
+      <div class="well">
+        <button class="btn btn-success btn-sm" id="refreshBtn">
+          <span class="glyphicon glyphicon-refresh"></span>
+        </button>
+        <button class="btn btn-success btn-sm" id="removeAllTabsBtn">
+          Remove All Data Tabs
+        </button>
+      </div>
+    	<div id="menu"></div>
   </div>
   
   <div class="col-lg-8 col-xs-12 mapOuterDiv">
@@ -63,13 +71,23 @@ var ready = function() {
     menuGroupSelectorID++;
   <% end %>
 
-  console.log("before buildMenu");
-  console.log(sparqlObjects);
+  // console.log("before buildMenu");
+  // console.log(sparqlObjects);
   
   buildMenu(sparqlObjects, queryResponses);
-  console.log("after buildMenu");
-  console.log(sparqlObjects);
+  // console.log("after buildMenu");
+  // console.log(sparqlObjects);
+
+  $('#refreshBtn').click(function () { 
+    location.reload(false); // refresh the current page
+  });
+
+  // remove all of the nav tabs that build up above the map
+  $('#removeAllTabsBtn').click(function () { 
+    removeAllDataTabs(sparqlObjects); 
+  });
 }
 $(document).ready(ready);
 $(document).on('page:load', ready);
+
 </script>

@@ -79,6 +79,10 @@
       <button class="btn btn-primary btn-xs" data-toggle="collapse" data-target="#newQueryForm">
         New Sparql Query
       </button>
+    
+      <button class="btn btn-primary btn-xs" data-toggle="collapse" data-target="#newEndpointForm">
+        New Sparql Endpoint
+      </button>
     <% end %>
   </div>
 
@@ -90,7 +94,11 @@
     </span>
   </div>
 </div>
-
+<br>
 <div id="newQueryForm" class="collapse">
   <div class="well"><%= render 'form_for_new_child' %></div>
+</div>
+
+<div id="newEndpointForm" class="collapse">
+  <div class="well"><%= render 'sparql_endpoints/form' %></div>
 </div>
