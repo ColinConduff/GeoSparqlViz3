@@ -6,7 +6,7 @@ class SparqlEndpointsController < ApplicationController
   # GET /sparql_endpoints.json
   def index
     @sparql_endpoints = SparqlEndpoint.joins(:user).where('user_id = ?', current_user)
-    @other_users_sparql_endpoints = SparqlEndpoint.joins(:user).where('user_id != ?', current_user)
+    @other_users_sparql_endpoints = SparqlEndpoint.select('distinct (endpoint), name').joins(:user).where('user_id != ?', current_user)
   end
 
   # GET /sparql_endpoints/1
