@@ -4,98 +4,129 @@ var map;
 var selectControl;
 var vectorLayers = [];
 
-// $('.firstItemInactive').html('<span class="glyphicon glyphicon-search"></span>');
-// $('.firstItemActive').html('<span class="glyphicon glyphicon-search"></span>');
-
-// $('<button />', {
-//   class: 'firstItemInactive',
-//   type: 'button',
-//   html: '<span class="glyphicon glyphicon-arrow-left"></span>'
-// });
-
-// This was used to toggle the size of the map
-// See css for Panel1
-
-// var toggleFullScreenMapBtnClicked = false;
-// function toggleFullScreenMapBtn() { 
-//     if(toggleFullScreenMapBtnClicked == false) {
-//         $('.sideBar').hide();
-//         $('.mapOuterDiv').removeClass('col-lg-6');
-//         map.updateSize();
-//         toggleFullScreenMapBtnClicked = true;
-
-//     } else {
-//         $('.sideBar').show();
-//         $('.mapOuterDiv').addClass('col-lg-6');
-//         map.updateSize();
-//         toggleFullScreenMapBtnClicked = false;
-//     }
-// }
-
 function initializeMap() {
 
-    var maxExtent = new OpenLayers.Bounds(-20037508, -20037508, 20037508, 20037508),
-        restrictedExtent = maxExtent.clone();
-    
-    // var panel = new OpenLayers.Control.Panel({ displayClass: 'Panel1' });
-    // panel.addControls([
-    //     new OpenLayers.Control.Button({
-    //         displayClass: 'first', 
-    //         trigger: toggleFullScreenMapBtn, 
-    //         title: 'Button is to be clicked'
-    //     })
-    // ]);
-
-    map = new OpenLayers.Map({
-        div: 'map', 
-        controls: [
-            new OpenLayers.Control.PanZoomBar(),
-            new OpenLayers.Control.LayerSwitcher()//,
-            //panel
-        ],
-        projection: new OpenLayers.Projection('EPSG:900913'),
-        displayProjection: new OpenLayers.Projection('EPSG:4326'),
-        units: 'm',
-        numZoomLevels: 18,
-        maxResolution: 156543.0339,
-        maxExtent: maxExtent,
-        restrictedExtent: restrictedExtent,
+    map = new ol.Map({
+        target: 'map', 
+        controls: ol.control.defaults().extend([
+            new ol.control.ScaleLine({
+                units: 'm'
+            })
+        ]),
+        // numZoomLevels: 18,
         layers: [
-            new OpenLayers.Layer.OSM(), // open street map
-            new OpenLayers.Layer.XYZ('SmallScale',
-                'http://basemap.nationalmap.gov/ArcGIS/rest/services/USGSTopo/MapServer/tile/${z}/${y}/${x}', {
-                sphericalMercator: true,
-                isBaseLayer: true,
-                attribution:'USGS - The National Map'
-            }),
+            new ol.layer.Tile({
+                source: new ol.source.OSM()
+            })//,
+            // new ol.layer.Tile({
+            //   source: new ol.source.XYZ({
+            //     'SmallScale',
+            //     'http://basemap.nationalmap.gov/ArcGIS/rest/services/USGSTopo/MapServer/tile/${z}/${y}/${x}', {
+            //         sphericalMercator: true,
+            //         isBaseLayer: true,
+            //         attribution:'USGS - The National Map'
+            //     }
+            //   })
+            // }),
 
-            new OpenLayers.Layer.XYZ('NationalMapLarge',
-                'http://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer/tile/${z}/${y}/${x}', {
-                sphericalMercator: true,
-                isBaseLayer: true,
-                attribution:'USGS - The National Map'
-            }),
-            new OpenLayers.Layer.Vector('Vector Layer') // not necessary
-        ]
+            // new ol.layer.Tile({
+            //   source: new ol.source.XYZ({
+            //     'NationalMapLarge',
+            //     'http://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer/tile/${z}/${y}/${x}', {
+            //         sphericalMercator: true,
+            //         isBaseLayer: true,
+            //         attribution:'USGS - The National Map'
+            //     }
+            //   })
+            // })
+        ],
+        view: new ol.View({
+            projection: 'EPSG:900913',
+            extent: ol.proj.transformExtent(
+                [-20037508, -20037508, 20037508, 20037508], 
+                'EPSG:4326', 
+                'EPSG:900913'
+            ),
+            maxResolution: 156543.0339,
+            //displayProjection: 'EPSG:4326', // not sure if this works or is necessary 
+            center: new ol.proj.transform(
+                [-84.445, 33.7991],                                      
+                'EPSG:4326',                       
+                'EPSG:900913'
+            ),
+            zoom: 2 //18
+        })
     });
-
-    var proj = new OpenLayers.Projection('EPSG:4326');
-    var mercator = new OpenLayers.Projection('EPSG:900913');
-    var point = new OpenLayers.LonLat(-84.445, 33.7991);
-    map.setCenter(point.transform(proj, mercator), 12);
 }
 
 $(document).ready(initializeMap);
 
+// the following is used to highlight features on click events /////////////
+
+// var select = null;
+// var selectSingleClick = new ol.interaction.Select();
+// var selectElement = document.getElementById('type');
+
+// var changeInteraction = function() {
+//     if (select !== null) {
+//       map.removeInteraction(select);
+//     }
+//     var value = selectElement.value;
+//     if (value == 'singleclick') {
+//       select = selectSingleClick;
+    
+//     } else {
+//       select = null;
+//     }
+
+//     if (select !== null) {
+//       map.addInteraction(select);
+//       select.on('select', function(e) {
+//         var message = '&nbsp;' +
+//             e.target.getFeatures().getLength() +
+//             ' selected features (last operation selected ' + 
+//             e.selected.length +
+//             ' and deselected ' + 
+//             e.deselected.length + 
+//             ' features)';
+//         document.getElementById('status').innerHTML = message;
+//       });
+//     }
+// };
+
+// selectElement.onchange = changeInteraction;
+// changeInteraction();
+
+// end feature highlight on click event code /////////////////////////////////
+
+function hideAllVectorLayers() {
+    for(var i = 0; i < vectorLayers.length; i++) {
+        vectorLayers[i].setVisible(false); 
+    }
+}
+
+function showAllVectorLayers() {
+    for(var i = 0; i < vectorLayers.length; i++) {
+        vectorLayers[i].setVisible(true); 
+    }
+}
+
+// not sure if this works with ol 3
+// function showOnlySelectedLayer(layerID) {
+//     for(var i = 0; i < vectorLayers.length; i++) {
+//         if(vectorLayers[i].features[0].id == layerID) {
+//             hideAllVectorLayers();
+//             vectorLayers[i].setVisible(true); 
+//             selectControl.select(vectorLayers[i].features[0]); 
+//         }
+//     }
+// }
+
 // query response must have data named wkt
 function parseFeaturesIntoArray(queryResult) {
 
-    var features = [];
-    var options = {
-        'internalProjection': map.baseLayer.projection, 
-        'externalProjection': new OpenLayers.Projection('EPSG:4269')
-    };   
-    var parser = new OpenLayers.Format.WKT(options);
+    var features = [];   
+    var parser = new ol.format.WKT();
 
     var resultBindings = queryResult.results.bindings;
     for (var i = 0; i < resultBindings.length; i++) {
@@ -105,7 +136,10 @@ function parseFeaturesIntoArray(queryResult) {
             if (wkt2.split(/\>/)[1] != undefined) {
                 wkt2 = wkt2.split(/\>/)[1];
             }
-            var feat = parser.read(wkt2);
+            var feat = parser.readFeature(wkt2, {
+                dataProjection: 'EPSG:900913',
+                featureProjection: 'EPSG:4269'
+            });
             if (feat != undefined) {
                 features.push(feat);        
             }
@@ -116,33 +150,11 @@ function parseFeaturesIntoArray(queryResult) {
 }
 
 // global variable so that extent contains all layers
-var bounds = new OpenLayers.Bounds();
+var bounds = ol.Extent;
 function findNewBounds(features) {
 
     for (i=0; i<features.length; ++i) {
-        bounds.extend(features[i].geometry.getBounds()); 
-    }
-}
-
-function hideAllVectorLayers() {
-    for(var i = 0; i < vectorLayers.length; i++) {
-        vectorLayers[i].setVisibility(false);
-    }
-}
-
-function showAllVectorLayers() {
-    for(var i = 0; i < vectorLayers.length; i++) {
-        vectorLayers[i].setVisibility(true);
-    }
-}
-
-function showOnlySelectedLayer(layerID) {
-    for(var i = 0; i < vectorLayers.length; i++) {
-        if(vectorLayers[i].features[0].id == layerID) {
-            hideAllVectorLayers();
-            vectorLayers[i].setVisibility(true);
-            selectControl.select(vectorLayers[i].features[0]);
-        }
+        bounds.extend(features[i].geometry.getExtent()); 
     }
 }
 
@@ -150,68 +162,85 @@ function drawVectors(features, vectorLayerStyle) {
 
     var newVectorLayer;
 
-    if(vectorLayerStyle != null) { 
-        newVectorLayer = new OpenLayers.Layer.Vector("styled vector layer", {styleMap: vectorLayerStyle});
-    
-    } else {
-        newVectorLayer = new OpenLayers.Layer.Vector();
-    }
+    // still need to add style
+    // {styleMap: vectorLayerStyle}
+    newVectorLayer = new ol.layer.Vector({ 
+        source: new ol.source.Vector({
+            features: features
+        })
+    });
 
-    newVectorLayer.addFeatures(features);
     map.addLayer(newVectorLayer);
 
     findNewBounds(features);
-    map.zoomToExtent(bounds);
-
+    
+    //map.zoomToExtent(bounds); // old
+    
+    if(features.length != 0) {
+        map.getView().fit(bounds, map.getSize()); // not sure if this works 
+    }
+   
     vectorLayers.push(newVectorLayer);
 
-    selectControl = new OpenLayers.Control.SelectFeature(
-        vectorLayers,
-        {
-            onSelect: function(event) { 
-                hideAllVectorLayers();
-                event.layer.setVisibility(true); 
-            } ,
-            onUnselect: function(event) { 
-                showAllVectorLayers(); 
-            }
-            /* 
-             clickout: true, toggle: false,
-             multiple: false, hover: false,
-             toggleKey: "ctrlKey", // ctrl key removes from selection
-             multipleKey: "shiftKey" // shift key adds to selection
-            */
-        }
-    );
+    // old 
+    // selectControl = new OpenLayers.Control.SelectFeature(
+    //     vectorLayers,
+    //     {
+    //         onSelect: function(event) { 
+    //             hideAllVectorLayers();
+    //             event.layer.setVisibility(true);  // setVisible() in ol 3
+    //         } ,
+    //         onUnselect: function(event) { 
+    //             showAllVectorLayers(); 
+    //         }
+    //     }
+    // );
 
-    map.addControl(selectControl);
-    selectControl.activate();
+    // map.addControl(selectControl); // old
+    // selectControl.activate(); // old
 }
 
 function parseFeaturesAndDrawVectors(msg)
 {   
-    var style = new OpenLayers.StyleMap({
-        "default":new OpenLayers.Style(OpenLayers.Util.applyDefaults({
-            fillColor: "blue",
-            strokeColor:"black",
-            graphicName:"circle",
-            rotation:0,
-            pointRadius:10
-        }, OpenLayers.Feature.Vector.style["default"])),
-        "select":new OpenLayers.Style(OpenLayers.Util.applyDefaults({
-            fillColor:"yellow",
-            strokeColor:"black",
-            graphicName:"circle",
-            rotation:0,
-            pointRadius:10
-        }, OpenLayers.Feature.Vector.style["select"])),
-        "highlight":new OpenLayers.Style(OpenLayers.Util.applyDefaults({
-            fillColor:"yellow",
-            strokeColor:"black",
-            graphicName:"circle",
-            rotation:0,
-            pointRadius:10
-        }, OpenLayers.Feature.Vector.style["highlight"]))
+    var style = new ol.style.Style({
+        fill: new ol.style.Fill({
+          color: 'rgba(255, 255, 255, 0.6)'
+        }),
+        stroke: new ol.style.Stroke({
+          color: '#319FD3',
+          width: 1
+        }),
+        text: new ol.style.Text({
+          font: '12px Calibri,sans-serif',
+          fill: new ol.style.Fill({
+            color: '#000'
+          }),
+          stroke: new ol.style.Stroke({
+            color: '#fff',
+            width: 3
+          })
+        })
+        // "default":new ol.Style(ol.Util.applyDefaults({
+        //     fillColor: "blue",
+        //     strokeColor:"black",
+        //     graphicName:"circle",
+        //     rotation:0,
+        //     pointRadius:10
+        // }, ol.Feature.Vector.style["default"])),
+        // "select":new ol.Style(ol.Util.applyDefaults({
+        //     fillColor:"yellow",
+        //     strokeColor:"black",
+        //     graphicName:"circle",
+        //     rotation:0,
+        //     pointRadius:10
+        // }, ol.Feature.Vector.style["select"])),
+        // "highlight":new ol.Style(ol.Util.applyDefaults({
+        //     fillColor:"yellow",
+        //     strokeColor:"black",
+        //     graphicName:"circle",
+        //     rotation:0,
+        //     pointRadius:10
+        // }, ol.Feature.Vector.style["highlight"]))
     });
     
     var features = parseFeaturesIntoArray(msg);

@@ -11,10 +11,10 @@
  * file per style scope.
  *
  *= require bootstrap/css/bootstrap.min
+ *= require openlayers3/css/ol
  *= require codemirror
  *= require codemirror/themes/hopscotch
  *= require rails_bootstrap_forms
  *= require scaffolds
- *= require simplePagination
  *= require sparql_queries
  */
