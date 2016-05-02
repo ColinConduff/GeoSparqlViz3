@@ -3,6 +3,9 @@
   <%#= content_tag :div, msg, class: "alert alert-info" %>
 <%# end %>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.15.1/ol-debug.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.15.1/ol.css">
+
 <div class="row">
   <div class="col-lg-4 col-xs-12 sideBar">
     	<%#= render "left" %>
@@ -23,6 +26,9 @@
 </div>
 
 <%= javascript_include_tag 'visualizerManifest', 'data-turbolinks-track' => false %>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.15.1/ol-debug.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.15.1/ol.js"></script>
+
 
 <script type='text/javascript'>
 var ready = function() {

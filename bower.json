@@ -16,6 +16,6 @@
     "tests"
   ],
   "dependencies": {
-    "openlayers3": "^3.0.0"
+    "OpenLayers": "^3.15.1"
   }
 }

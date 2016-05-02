@@ -13,7 +13,6 @@ function initializeMap() {
                 units: 'm'
             })
         ]),
-        // numZoomLevels: 18,
         layers: [
             new ol.layer.Tile({
                 source: new ol.source.OSM()
@@ -41,20 +40,16 @@ function initializeMap() {
             // })
         ],
         view: new ol.View({
-            projection: 'EPSG:900913',
-            extent: ol.proj.transformExtent(
-                [-20037508, -20037508, 20037508, 20037508], 
-                'EPSG:4326', 
-                'EPSG:900913'
-            ),
-            maxResolution: 156543.0339,
+            // projection: 'EPSG:900913', // don't think this actually does anything
+            // maxResolution: 156543.0339, // don't think this actually does anything
             //displayProjection: 'EPSG:4326', // not sure if this works or is necessary 
             center: new ol.proj.transform(
                 [-84.445, 33.7991],                                      
                 'EPSG:4326',                       
                 'EPSG:900913'
             ),
-            zoom: 2 //18
+            zoom: 2,
+            maxZoom: 18
         })
     });
 }
@@ -137,8 +132,8 @@ function parseFeaturesIntoArray(queryResult) {
                 wkt2 = wkt2.split(/\>/)[1];
             }
             var feat = parser.readFeature(wkt2, {
-                dataProjection: 'EPSG:900913',
-                featureProjection: 'EPSG:4269'
+                dataProjection: 'EPSG:4326',
+                featureProjection: 'EPSG:3857'
             });
             if (feat != undefined) {
                 features.push(feat);        
@@ -149,14 +144,17 @@ function parseFeaturesIntoArray(queryResult) {
     return features;
 }
 
-// global variable so that extent contains all layers
-var bounds = ol.Extent;
-function findNewBounds(features) {
+// // global variable so that extent contains all layers
+// //var bounds = map.getExtent();
+// function findNewBounds(features) {
 
-    for (i=0; i<features.length; ++i) {
-        bounds.extend(features[i].geometry.getExtent()); 
-    }
-}
+//     for (i=0; i<features.length; ++i) {
+//         console.log(features[i]);
+//         var extent = features[i].geometry.getExtent();
+//         map.getView().fit(extent, map.getSize());
+//         //bounds.extend(features[i].geometry.getExtent()); 
+//     }
+// }
 
 function drawVectors(features, vectorLayerStyle) {
 
@@ -166,19 +164,35 @@ function drawVectors(features, vectorLayerStyle) {
     // {styleMap: vectorLayerStyle}
     newVectorLayer = new ol.layer.Vector({ 
         source: new ol.source.Vector({
-            features: features
+            features: features,
+            // extent: ol.proj.transformExtent(
+            //     [-20037508, -20037508, 20037508, 20037508], 
+            //     'EPSG:4326', 
+            //     'EPSG:900913'
+            // )
         })
     });
 
     map.addLayer(newVectorLayer);
+    
+    var extent = newVectorLayer.getSource().getExtent();
+    map.getView().fit(extent, map.getSize());
 
-    findNewBounds(features);
+    //findNewBounds(features);
     
     //map.zoomToExtent(bounds); // old
     
-    if(features.length != 0) {
-        map.getView().fit(bounds, map.getSize()); // not sure if this works 
-    }
+    // if(features.length != 0) {
+    //     findNewBounds(features);
+    //     //map.getView().fit(bounds, map.getSize()); // not sure if this works 
+    // }
+
+    // get extent of all layers, this is a better way 
+    // var extent = ol.extent.createEmpty(); // make this global like before
+    // projecten.getLayers().forEach(function(layer) {
+    //   ol.extent.extend(extent, layer.getSource().getExtent());
+    // });
+    // map.getView().fit(extent, map.getSize());
    
     vectorLayers.push(newVectorLayer);
 
