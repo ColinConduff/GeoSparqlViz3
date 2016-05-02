@@ -22,6 +22,22 @@ div.olMap {
     height: 65em;
 }
 
+.map:-moz-full-screen {
+height: 100%;
+}
+.map:-webkit-full-screen {
+height: 100%;
+}
+.map:-ms-fullscreen {
+height: 100%;
+}
+.map:fullscreen {
+height: 100%;
+}
+.ol-rotate {
+top: 3em;
+}
+
 /* This was used to add a button to the map 
    that toggled the size of the map
    

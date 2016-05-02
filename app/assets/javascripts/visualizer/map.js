@@ -9,7 +9,8 @@ function initializeMap() {
     map = new ol.Map({
         target: 'map', 
         controls: ol.control.defaults().extend([
-            new ol.control.OverviewMap()
+            new ol.control.OverviewMap(),
+            new ol.control.FullScreen()
         ]),
         layers: [
             new ol.layer.Tile({
@@ -18,7 +19,7 @@ function initializeMap() {
             // new ol.layer.Tile({
             //   source: new ol.source.XYZ({
             //     'SmallScale',
-            //     'http://basemap.nationalmap.gov/ArcGIS/rest/services/USGSTopo/MapServer/tile/${z}/${y}/${x}', {
+            //     url: 'http://basemap.nationalmap.gov/ArcGIS/rest/services/USGSTopo/MapServer/tile/${z}/${y}/${x}', {
             //         sphericalMercator: true,
             //         isBaseLayer: true,
             //         attribution:'USGS - The National Map'
