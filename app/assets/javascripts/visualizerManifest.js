@@ -1,4 +1,4 @@
-//= require proj4js
+
 //= require codemirror
 //= require codemirror/modes/sparql
 //= require SparqlQueries/form
