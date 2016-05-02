@@ -9,9 +9,7 @@ function initializeMap() {
     map = new ol.Map({
         target: 'map', 
         controls: ol.control.defaults().extend([
-            new ol.control.ScaleLine({
-                units: 'm'
-            })
+            new ol.control.OverviewMap()
         ]),
         layers: [
             new ol.layer.Tile({
@@ -156,22 +154,26 @@ function parseFeaturesIntoArray(queryResult) {
 //     }
 // }
 
-function drawVectors(features, vectorLayerStyle) {
+function drawVectors(features) {
 
-    var newVectorLayer;
-
-    // still need to add style
-    // {styleMap: vectorLayerStyle}
-    newVectorLayer = new ol.layer.Vector({ 
+    var newVectorLayer = new ol.layer.Vector({ 
         source: new ol.source.Vector({
-            features: features,
-            // extent: ol.proj.transformExtent(
-            //     [-20037508, -20037508, 20037508, 20037508], 
-            //     'EPSG:4326', 
-            //     'EPSG:900913'
-            // )
+            features: features
         })
     });
+
+    // newVectorLayer.getSource().forEachFeature(function(feature) {
+    //     var style = new ol.style.Style({
+    //         stroke: new ol.style.Stroke({
+    //             color: '#f00',
+    //             width: 1
+    //         }),
+    //         fill: new ol.style.Fill({
+    //             color: 'rgba(255,0,0,0.1)'
+    //         })
+    //     })
+    //     feature.setStyle(style);
+    // });
 
     map.addLayer(newVectorLayer);
     
@@ -216,47 +218,6 @@ function drawVectors(features, vectorLayerStyle) {
 
 function parseFeaturesAndDrawVectors(msg)
 {   
-    var style = new ol.style.Style({
-        fill: new ol.style.Fill({
-          color: 'rgba(255, 255, 255, 0.6)'
-        }),
-        stroke: new ol.style.Stroke({
-          color: '#319FD3',
-          width: 1
-        }),
-        text: new ol.style.Text({
-          font: '12px Calibri,sans-serif',
-          fill: new ol.style.Fill({
-            color: '#000'
-          }),
-          stroke: new ol.style.Stroke({
-            color: '#fff',
-            width: 3
-          })
-        })
-        // "default":new ol.Style(ol.Util.applyDefaults({
-        //     fillColor: "blue",
-        //     strokeColor:"black",
-        //     graphicName:"circle",
-        //     rotation:0,
-        //     pointRadius:10
-        // }, ol.Feature.Vector.style["default"])),
-        // "select":new ol.Style(ol.Util.applyDefaults({
-        //     fillColor:"yellow",
-        //     strokeColor:"black",
-        //     graphicName:"circle",
-        //     rotation:0,
-        //     pointRadius:10
-        // }, ol.Feature.Vector.style["select"])),
-        // "highlight":new ol.Style(ol.Util.applyDefaults({
-        //     fillColor:"yellow",
-        //     strokeColor:"black",
-        //     graphicName:"circle",
-        //     rotation:0,
-        //     pointRadius:10
-        // }, ol.Feature.Vector.style["highlight"]))
-    });
-    
     var features = parseFeaturesIntoArray(msg);
-    drawVectors(features, style);
+    drawVectors(features);
 }
