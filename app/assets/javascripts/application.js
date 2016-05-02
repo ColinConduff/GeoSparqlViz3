@@ -12,4 +12,4 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require bootstrap/js/bootstrap.min
+//= require bootstrap/dist/js/bootstrap.min

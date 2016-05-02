@@ -16,6 +16,7 @@
     "tests"
   ],
   "dependencies": {
-    "OpenLayers": "^3.15.1"
+    "OpenLayers": "^3.15.1",
+    "bootstrap": "^3.3.6"
   }
 }
