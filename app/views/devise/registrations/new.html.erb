@@ -10,14 +10,11 @@
 
     <div class="field">
       
-      <%= f.password_field :password, autocomplete: "off" %>
-      <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em>
-      <% end %>
+      <%= f.password_field :password, autocomplete: "off", placeholder: "8 characters minimum" %>
     </div>
 
     <div class="field">
-      <%= f.password_field :password_confirmation, autocomplete: "off" %>
+      <%= f.password_field :password_confirmation, autocomplete: "off", placeholder: "8 characters minimum" %>
     </div>
 
     <div class="actions">

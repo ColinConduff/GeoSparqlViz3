@@ -2,6 +2,11 @@
 
 <div class="well text-center">
   <%= bootstrap_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <%= devise_error_messages! %>
+    <%- flash.each do |name, msg| -%>
+      <%= content_tag :div, msg, id: "flash_#{name}", class: "alert alert-danger" %>
+    <%- end -%>
+
     <div class="field">
       <%= f.email_field :email, autofocus: true %>
     </div>
@@ -10,11 +15,11 @@
       <%= f.password_field :password, autocomplete: "off" %>
     </div>
 
-    <% if devise_mapping.rememberable? -%>
+    <% if devise_mapping.rememberable? %>
       <div class="field">
         <%= f.check_box :remember_me %>
       </div>
-    <% end -%>
+    <% end %>
 
     <div class="actions">
       <%= f.submit "Log in", class:"btn btn-default btn-block" %>
