@@ -1,5 +1,11 @@
 
-<p id="notice"><%= notice %></p>
+<% if flash[:notice] %>
+  <h5 class="alert alert-success text-center"><%= flash[:notice] %></h5>
+<% end %>
+
+<% if flash[:alert] %>
+  <h5 class="alert alert-danger text-center"><%= flash[:alert] %></h5>
+<% end %>
 
 <div class="text-center">
   <h1>Browse Sparql Queries</h1>

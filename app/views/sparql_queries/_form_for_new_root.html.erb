@@ -1,7 +1,7 @@
 <%= bootstrap_form_for(@sparql_query) do |f| %>
   <% if @sparql_query.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@sparql_query.errors.count, "error") %> prohibited this sparql_query from being saved:</h2>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(@sparql_query.errors.count, "error") %> prohibited this sparql_query from being saved:</h4>
 
       <ul>
       <% @sparql_query.errors.full_messages.each do |msg| %>

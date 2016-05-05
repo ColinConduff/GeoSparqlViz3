@@ -1,7 +1,22 @@
 
+<% if flash[:notice] %>
+  <h5 class="alert alert-success text-center"><%= flash[:notice] %></h5>
+<% end %>
 
-
-<p id="notice"><%= notice %></p>
+<% if flash[:alert] %>
+  <h5 class="alert alert-danger text-center"><%= flash[:alert] %></h5>
+<% end %>
+<!-- <%# if @sparql_query and @sparql_query.errors.any? %>
+  <div id="error_explanation">
+    <h2><%#= pluralize(@sparql_query.errors.count, "error") %> prohibited this sparql_query from being saved:</h2>
+ 
+    <ul>
+    <%# @sparql_query.errors.full_messages.each do |msg| %>
+      <li><%#= msg %></li>
+    <%# end %>
+    </ul>
+  </div>
+<%# end %> -->
 
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
   <% @sparql_queries.each do |sparql_query| %>

@@ -42,12 +42,18 @@ class SparqlQueriesController < ApplicationController
     # redirect to the root sparql_query
     @redirect_target = set_redirect_target(@sparql_query)
 
+    # have sparql_endpoints ready in case save fails
+    @sparql_endpoints = SparqlEndpoint.joins(:user).where('user_id = ?', current_user)
+
     respond_to do |format|
       if @sparql_query.save
-        format.html { redirect_to @redirect_target, notice: 'Sparql endpoint was successfully created.' }
+        format.html { redirect_to @redirect_target, notice: 'The sparql query was successfully created.' }
         format.json { render :show, status: :created, location: @sparql_query }
+      elsif @redirect_target.id != @sparql_query.id 
+        format.html { redirect_to @redirect_target, alert: 'Failed to create a new sparql query. A name, query, and endpoint must be present.'}
+        format.json { render json: @sparql_query.errors, status: :unprocessable_entity }
       else
-        format.html { render :new }
+        format.html { render :action => "new" } 
         format.json { render json: @sparql_query.errors, status: :unprocessable_entity }
       end
     end
@@ -60,12 +66,15 @@ class SparqlQueriesController < ApplicationController
     # redirect to the root sparql_query
     @redirect_target = set_redirect_target(@sparql_query)
 
+    # have sparql_endpoints ready in case save fails
+    @sparql_endpoints = SparqlEndpoint.joins(:user).where('user_id = ?', current_user)
+
     respond_to do |format|
       if @sparql_query.update(sparql_query_params)
         format.html { redirect_to @redirect_target, notice: 'Sparql query was successfully updated.' }
         format.json { render :show, status: :ok, location: @sparql_query }
       else
-        format.html { render :edit }
+        format.html { redirect_to @redirect_target, alert: 'Failed to update the sparql query. A name, query, and endpoint must be present.'}
         format.json { render json: @sparql_query.errors, status: :unprocessable_entity }
       end
     end
