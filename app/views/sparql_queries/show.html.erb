@@ -82,6 +82,16 @@
   <% end %>  
 </div>
 
+<div id="newQueryForm" class="collapse">
+  <div class="well"><%= render 'form_for_new_child' %></div>
+</div>
+
+<div id="newEndpointForm" class="collapse">
+  <div class="well"><%= render 'sparql_endpoints/form' %></div>
+</div>
+
+
+
 <div class="row">
   <% if current_user.id == @sparql_queries.first.user.id %>
     <div class="col-xs-12 col-sm-4">
@@ -102,11 +112,4 @@
     <% end %>
   </div>
 </div>
-<br>
-<div id="newQueryForm" class="collapse">
-  <div class="well"><%= render 'form_for_new_child' %></div>
-</div>
 
-<div id="newEndpointForm" class="collapse">
-  <div class="well"><%= render 'sparql_endpoints/form' %></div>
-</div>
