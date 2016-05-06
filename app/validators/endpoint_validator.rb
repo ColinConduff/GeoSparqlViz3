@@ -1,3 +1,7 @@
+
+# This validator is used to ensure that all sparql endpoints
+# start with either http:// or https://
+
 class EndpointValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     return if value.blank?

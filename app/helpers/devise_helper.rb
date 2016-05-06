@@ -1,3 +1,7 @@
+
+# This helper is used to customize the error messages that are returned 
+# in devise views
+
 module DeviseHelper
   def devise_error_messages!
     return "" unless devise_error_messages?

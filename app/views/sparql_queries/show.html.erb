@@ -7,6 +7,11 @@
   <h5 class="alert alert-danger text-center"><%= flash[:alert] %></h5>
 <% end %>
 
+<!-- 
+  Iterates through the chain of sparql queries 
+  Creates collapsable panels, 
+  which contain edit forms and delete buttons if the user is the original creator
+-->
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
   <% @sparql_queries.each do |sparql_query| %>
     <div class="panel panel-default">
@@ -37,7 +42,6 @@
               <!-- Prevent a user from editing/deleting a different user's query -->
               <% if current_user.id == sparql_query.user.id %> 
                 <div class="col-xs-12">
-                  <%#= render 'form_for_edit' %>
                   <%= bootstrap_form_for(sparql_query) do |f| %>
                     <div class="form-group">
                       <%= f.text_field :name %>
@@ -61,15 +65,12 @@
                       <% end %>
                     </div>
                   <% end %>
-                  
                 </div>
-
-                <!-- <div class="col-xs-2">
-                  <%#= link_to edit_sparql_query_path(sparql_query) do %>
-                    <button class="btn btn-info">Edit</button>
-                  <%# end %>
-                </div> -->
                 
+                <!-- 
+                  If the current user is not the query's creator, only show
+                  the codemirrors textarea
+                 -->
               <% else %>
                 <div class="col-xs-12">
                   <textarea><%= sparql_query.query %></textarea>
@@ -82,16 +83,20 @@
   <% end %>  
 </div>
 
+<!-- Form for creating a new query attached to the end of the chain of queries -->
 <div id="newQueryForm" class="collapse">
   <div class="well"><%= render 'form_for_new_child' %></div>
 </div>
 
+<!-- Form for quickly adding a new sparql endpoint -->
 <div id="newEndpointForm" class="collapse">
   <div class="well"><%= render 'sparql_endpoints/form' %></div>
 </div>
 
-
-
+<!-- 
+  If the current user is the query's original creator
+  show buttons that show the above forms. 
+-->
 <div class="row">
   <% if current_user.id == @sparql_queries.first.user.id %>
     <div class="col-xs-12 col-sm-4">

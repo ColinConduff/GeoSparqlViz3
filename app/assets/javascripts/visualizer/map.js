@@ -1,13 +1,17 @@
 
+// See views/visualizer/index.html.erb
+// The following code initializes the map and draws map layers on it
+// using Well-Known Text (wkt) data that is returned from some sparql queries
+
 // global variables 
 var map;
-var selectControl;
-var vectorLayers = [];
+var selectControl; // this isn't being used 
+var vectorLayers = []; // this isn't really being used either
 
 function initializeMap() {
 
     map = new ol.Map({
-        target: 'map', // css selector in html
+        target: 'map', // css selector in index.html.erb
         controls: ol.control.defaults().extend([
             new ol.control.OverviewMap(),
             new ol.control.FullScreen()
@@ -16,6 +20,10 @@ function initializeMap() {
             new ol.layer.Tile({
                 source: new ol.source.OSM()
             })//,
+
+            // USGS has a map api, contact Rick Brown (I think?) if you want to 
+            // try to get this working
+
             // new ol.layer.Tile({
             //   source: new ol.source.XYZ({
             //     'SmallScale',
@@ -133,13 +141,19 @@ function drawVectors(features) {
         source: new ol.source.Vector({
             features: features
         })
+        // I tried adding styles here to color maps different colors, etc.
+        // but it didn't work for whatever reason
     });
 
     map.addLayer(newVectorLayer);
     
+    // Move the map to where the map layers have been created
     var extent = newVectorLayer.getSource().getExtent();
     map.getView().fit(extent, map.getSize());
    
+    // global vectorLayers array was used to get the extent
+    // of all of the layers generated from separate queries.  
+    // it's not currently being used.  
     vectorLayers.push(newVectorLayer);
 }
 

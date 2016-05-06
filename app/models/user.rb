@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   has_many :sparqlQueries
   has_many :sparqlEndpoints
 
+  # Adds the USGS sparql endpoint to each new user that registers for the first time
   after_create do |user|
 	@sparql_endpoint = SparqlEndpoint.new()
     @sparql_endpoint.user_id = user.id

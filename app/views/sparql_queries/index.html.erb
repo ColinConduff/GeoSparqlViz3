@@ -18,7 +18,11 @@
       <div class="panel-heading text-center"><h4>My Sparql Queries</h4></div>
       <div class="panel-body">
         <div class="row">
-          <!-- <div class="col-xs-5">
+          <!-- 
+          See assets/javascripts/SparqlQueries/showAll.js for 
+          code that was once used to filter queries using the search bar
+
+          <div class="col-xs-5">
             <div class="form-inline">
               <div class="form-group">
                 <input type="text" class="form-control" id="searchBar" placeholder="Search">
@@ -60,6 +64,7 @@
         <% end %>
       </table>
       <div class="panel-footer text-center">
+        <!-- Pagination occurs after 15 queries are available -->
         <%= will_paginate @sparql_queries, :param_name => 'my_queries' %>
       </div> 
     </div>
@@ -69,7 +74,10 @@
 
     <div class="panel panel-default">
       <div class="panel-heading text-center"><h4>Other Users' Sparql Queries</h4></div>
-      <!-- <div class="panel-body">
+      <!-- 
+      See above comment for link to related js code
+
+      <div class="panel-body">
         <div class="col-xs-6 text-center">
           <div class="form-inline">
             <div class="form-group">
@@ -110,12 +118,3 @@
     </div>
   </div>
 </div>
-
-<%#= javascript_include_tag 'manifest/sparqlQueries/general', 'data-turbolinks-track' => false %>
-
-<style>
-/* center pagination block */
-.simple-pagination ul {
-  display: inline-block;
-}
-</style>

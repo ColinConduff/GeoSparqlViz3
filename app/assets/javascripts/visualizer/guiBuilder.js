@@ -1,4 +1,9 @@
 
+// This code is used to build the GUI in views/visualizer/index.html.erb
+// The buildMenu function below is the entry point from the visualizer
+
+// Consider using a library like sparqljs to check the syntax of sparql queries
+// before they are submitted in the submitQuery function
 
 var globalIDCounter = 0; // prevent naming collisions for menu ids
 function addMenuSelectorIDAndDomTypeToNode(node) {
@@ -173,6 +178,8 @@ function createClickSubmitQueryEvent(currentSparqlObject, nextSparqlObject, quer
 
   }());
 }
+
+ // example of sparqlObjects object
  // var sparqlObjects = [
   //   {
   //     queryName: undefined,
@@ -285,8 +292,6 @@ function removeAllDataTabs(sparqlObjects) {
 }
 
 function addNavTab(sObj, msg) {
-  // console.log("sObj.cleanedQuery");
-  // console.log(sObj.cleanedQuery);
 
   var tabID = 'tabID' + globalIDCounter;
   var codeMirrorAreaID = 'codeMirrorAreaID'+globalIDCounter;
@@ -333,6 +338,7 @@ function addNavTab(sObj, msg) {
           navPanel += '<td>'+resObject[column].value+'</td>';
 
         } else {
+          // Don't show data if there are more than 1000 characters
           navPanel += '<td>Too much data to show</td>';
         }
       }
@@ -346,6 +352,8 @@ function addNavTab(sObj, msg) {
   initCodeMirror(codeMirrorAreaID);
 }
 
+// must be initialized during tab creation 
+// because everything is being built dynamically
 var initCodeMirror = function(codeMirrorAreaID) { 
   $('#'+codeMirrorAreaID).each(function() {
     var editor = CodeMirror.fromTextArea($(this).get(0), {
@@ -357,6 +365,7 @@ var initCodeMirror = function(codeMirrorAreaID) {
   });
 };
 
+// used to check if a query response contains wkt data
 var contains = function(needle) {
   // Per spec, the way to identify NaN is that it is not equal to itself
   var findNaN = needle !== needle;
@@ -388,13 +397,8 @@ function submitQuery(currentSparqlObject, nextSparqlObject, queryResponses) {
 
     function ifSuccessfulDoThis(msg) { 
       queryResponses.push(msg);
-
-      // console.log("currentSparqlObject.cleanedQuery");
-      // console.log(currentSparqlObject.cleanedQuery);
       
       addNavTab(currentSparqlObject, msg);
-      // console.log("queryResponses");
-      // console.log(queryResponses);
 
       if(contains.call(msg.head.vars, 'wkt')) {
         parseFeaturesAndDrawVectors(msg);

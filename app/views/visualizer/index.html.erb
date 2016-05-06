@@ -1,14 +1,10 @@
 
-<%# flash.each do |name, msg| %>
-  <%#= content_tag :div, msg, class: "alert alert-info" %>
-<%# end %>
-
+<!-- CDN for openlayers 3, use npm install openlayers3 to get minified/local version -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.15.1/ol-debug.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.15.1/ol.css">
 
 <div class="row">
   <div class="col-lg-4 col-xs-12 sideBar">
-    	<%#= render "left" %>
       <div class="well">
         <button class="btn btn-success btn-sm" id="refreshBtn">
           Refresh
@@ -17,6 +13,12 @@
           Remove All Data Tabs
         </button>
       </div>
+
+      <!-- 
+        See assets/javascripts/visualizer/guiBuilder.js 
+        This is built dynamically.
+        Be careful of side effects when changing guiBuilder.js
+      -->
     	<div id="menu"></div>
   </div>
   
@@ -32,6 +34,9 @@
 
 <script type='text/javascript'>
 var ready = function() {
+
+  // this is an example of what the sparqlObjects object ends up
+  // looking like after data is added to it throughout the guiBuilder.js process
 
   // var sparqlObjects = [
   //   {
@@ -57,7 +62,7 @@ var ready = function() {
 
   var sparqlObjects = [];
   var queryResponses = [];
-  var menuGroupSelectorID = 0;
+  var menuGroupSelectorID = 0; // used to avoid id collisions (give unique ids)
 
   <% @sparql_queries.each do |sparql_query| %>
 
@@ -76,13 +81,8 @@ var ready = function() {
     sparqlObjects.push(sparqlObject);
     menuGroupSelectorID++;
   <% end %>
-
-  // console.log("before buildMenu");
-  // console.log(sparqlObjects);
   
   buildMenu(sparqlObjects, queryResponses);
-  // console.log("after buildMenu");
-  // console.log(sparqlObjects);
 
   $('#refreshBtn').click(function () { 
     location.reload(false); // refresh the current page
@@ -93,7 +93,8 @@ var ready = function() {
     removeAllDataTabs(sparqlObjects); 
   });
 }
+
 $(document).ready(ready);
-$(document).on('page:load', ready);
+$(document).on('page:load', ready); // necessary if using turbolinks
 
 </script>
