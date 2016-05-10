@@ -10,7 +10,7 @@
 
 ===[wiki](https://github.com/ColinConduff/GeoSparqlViz3/wiki)
 
-=== Installation 
+=== Installation (Note: This is not necessary for users)
 
     git clone https://github.com/ColinConduff/GeoSparqlViz3.git
     
