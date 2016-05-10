@@ -4,8 +4,12 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+# if count > 0, assign parent query to the previous query
+<% 10.times do |n| %>
+query_<%= n %>: 
+    name: query_<%= n %>
+    query: <%= "Select ?s ?p ?o where { ?s ?p ?o }" %>
+    sparqlEndpoint: endpoint_<%= n %>
+    user: user_<%= n %>
+    <% if n > 0 %>parentQuery: query_<%= n-1 %><% end %>
+<% end %>
