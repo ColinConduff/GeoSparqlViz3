@@ -40,7 +40,7 @@
           <div class="row" id="queryRow">
               
               <!-- Prevent a user from editing/deleting a different user's query -->
-              <% if current_user.id == sparql_query.user.id %> 
+              <% if current_user == sparql_query.user %> 
                 <div class="col-xs-12">
                   <%= bootstrap_form_for(sparql_query) do |f| %>
                     <div class="form-group">
@@ -74,6 +74,7 @@
               <% else %>
                 <div class="col-xs-12">
                   <textarea><%= sparql_query.query %></textarea>
+                  <h5 class="text-center">Sparql Endpoint: <%= sparql_query.sparqlEndpoint.endpoint %></h5>
                 </div>
               <% end %>
           </div>
@@ -98,7 +99,7 @@
   show buttons that show the above forms. 
 -->
 <div class="row">
-  <% if current_user.id == @sparql_queries.first.user.id %>
+  <% if current_user == @sparql_queries.first.user %>
     <div class="col-xs-12 col-sm-4">
           <button class="btn btn-info btn-xs btn-block" data-toggle="collapse" data-target="#newQueryForm">
             New Sparql Query

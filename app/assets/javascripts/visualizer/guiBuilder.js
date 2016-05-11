@@ -313,6 +313,7 @@ function addNavTab(sObj, msg) {
   navPanel +=   '<div class="panel-heading text-center">'+sObj.queryName+'</div>';
   navPanel +=   '<div class="panel-body">';
   navPanel +=     '<textarea id="'+codeMirrorAreaID+'">'+sObj.cleanedQuery+'</textarea>';
+  navPanel +=     '<h5 class="text-center">Sparql Endpoint: '+sObj.endpoint+'</h5>';
   navPanel +=   '</div>';
   navPanel +=   '<table class="table">';
 

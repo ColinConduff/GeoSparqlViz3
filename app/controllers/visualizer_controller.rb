@@ -1,6 +1,4 @@
 class VisualizerController < ApplicationController
-
-	before_action :authenticate_user!
 	
 	def index
 		@sparql_queries = find_all_child_queries(params[:id])

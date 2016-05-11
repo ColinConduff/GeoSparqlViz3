@@ -1,5 +1,5 @@
 class SparqlQueriesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, only: [:new, :edit, :create, :update, :destroy]
   before_action :set_sparql_query, only: [:edit, :update, :destroy]
 
   # GET /sparql_queries
@@ -8,6 +8,10 @@ class SparqlQueriesController < ApplicationController
     # current user's root sparql queries
     @sparql_queries = SparqlQuery.joins(:user).where('user_id = ? AND parent_query_id IS NULL', current_user).order('updated_at DESC').page(params[:my_queries]).per_page(15)
     @other_users_sparql_queries = SparqlQuery.joins(:user).where('user_id != ? AND parent_query_id IS NULL', current_user).order('updated_at DESC').page(params[:not_my_queries]).per_page(15)
+  
+    if not user_signed_in?
+      @not_signed_in_queries = SparqlQuery.where('parent_query_id IS NULL').page(params[:not_signed_in_queries]).per_page(15)
+    end
   end
 
   # GET /sparql_queries/1
@@ -62,7 +66,6 @@ class SparqlQueriesController < ApplicationController
   # PATCH/PUT /sparql_queries/1
   # PATCH/PUT /sparql_queries/1.json
   def update
-
     # redirect to the root sparql_query
     @redirect_target = set_redirect_target(@sparql_query)
 

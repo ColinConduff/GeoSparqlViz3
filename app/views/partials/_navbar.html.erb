@@ -14,16 +14,16 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <% if user_signed_in? %>
           <li>
             <%= link_to "Sparql Queries", sparql_queries_path%>
           </li>
+        <% if user_signed_in? %>  
           <li>
             <%= link_to "Sparql Endpoints", sparql_endpoints_path%>
           </li>
         <% end %>
           <li>
-            <a href="https://github.com/ColinConduff/GeoSparqlViz3/wiki/How-To:-Create-and-Visualize-a-Query">Help</a>
+            <a href="https://github.com/ColinConduff/GeoSparqlViz3/wiki/">Help</a>
           </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -33,36 +33,3 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-
-<script>
-// stuff to toggle active class on links
-// get error related to not having jquery loaded yet
-// move to js file
-
-// function activate(selector) {
-//   $(selector).addClass('active');
-// }
-
-// function deactivate(selector) {
-//   $(selector).addClass('active');
-// }
-
-// $("#browse").click(function() {
-//   activate("#browse");
-//   deactivate("#visualize");
-//   deactivate("#editor");
-// });
-
-// $("#browse").click(function() {
-//   deactivate("#browse");
-//   activate("#visualize");
-//   deactivate("#editor");
-// });
-
-// $("#browse").click(function() {
-//   deactivate("#browse");
-//   deactivate("#visualize");
-//   activate("#editor");
-// });
-
-</script>
