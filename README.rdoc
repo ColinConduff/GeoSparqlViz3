@@ -25,4 +25,6 @@
  * Red Hat 7
  * Apache, Phusion Passenger
 
-<tt>rake doc:app</tt>.
+=== Tests
+
+    rake test
