@@ -1,6 +1,6 @@
 class SparqlQuery < ActiveRecord::Base
-	validates :name, presence: true
-	validates :query, presence: true
+	validates :name, presence: true, length: {minimum: 3, maximum: 150}
+	validates :query, presence: true, length: {minimum: 3, maximum: 1000}
 	validates :sparqlEndpoint, presence: true
 	
 	belongs_to :user, inverse_of: :sparqlQueries, :foreign_key => 'user_id'

@@ -46,6 +46,11 @@ div {
 
 */
 
+.btn {
+  margin-bottom:4px;
+  white-space: normal;
+}
+
 .dropdown-menu {
   width: 100%;
 }

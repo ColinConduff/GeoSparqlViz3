@@ -19,7 +19,7 @@
       <div class="panel-heading text-center"><h4>My Sparql Endpoints</h4></div>
       <div class="panel-body">
         <div class="row">
-          <div class="col-xs-3">
+          <div class="col-xs-6">
             <%= link_to new_sparql_endpoint_path do %>
               <button class="btn btn-primary btn-xs">
                 New Sparql Endpoint
@@ -74,10 +74,17 @@
         <% @other_users_sparql_endpoints.each do |sparql_endpoint| %>
           <tr id="queryRow">
             <td class="text-center">
-              <h5><%= sparql_endpoint.name %></h5>
-            </td>
-            <td class="col-xs-6">
-              <p><%= sparql_endpoint.endpoint %></p>
+                <div class="row">
+                  <div class="col-md-6 col-xs-12">
+                    <h4><%= sparql_endpoint.name %></h4>
+                    <% if sparql_endpoint.user %>
+                      <small>Created By: <%= sparql_endpoint.user.email %></small>
+                    <% end %>
+                  </div>
+                  <div class="col-md-6 col-xs-12">
+                    <p><%= sparql_endpoint.endpoint %></p>
+                  </div>
+                </div>
             </td>
           </tr>
         <% end %>

@@ -16,23 +16,36 @@
   <% @sparql_queries.each do |sparql_query| %>
     <div class="panel panel-default">
       <div class="panel-heading" role="tab" id="heading<%= sparql_query.id %>">
+        
+        <!-- Add columns if this is the root query -->
+        <% if @sparql_queries.first == sparql_query %>
+          <div class="row">
+            <div class="col-xs-12 col-sm-9 col-md-10">
+        <% end %>
+        
         <h4 class="panel-title">
-
-          <%# if @sparql_queries.first == sparql_query %>
             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= sparql_query.id %>" aria-expanded="true" aria-controls="collapse<%= sparql_query.id %>">
-          <%# else %>
-            <!-- <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= sparql_query.id %>" aria-expanded="false" aria-controls="collapse<%= sparql_query.id %>"> -->
-          <%# end %>
             <button class="btn btn-block"><%= sparql_query.name %></button>
           </a>
         </h4>
+
+        <!-- Add visualize button if this is the root query -->
+        <% if @sparql_queries.first == sparql_query %>
+            </div>
+            <div class="col-xs-12 col-sm-3 col-md-2"> 
+              <%= link_to visualizer_url(id: sparql_query.id) do %>
+                <button class="btn btn-success btn-block">
+                  Visualize
+                </button>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+        
       </div>
       <div 
         id="collapse<%= sparql_query.id %>" 
-        class="panel-collapse collapse 
-          <%# if @sparql_queries.first == sparql_query %>
-            in
-          <%# end %>" 
+        class="panel-collapse collapse in" 
         role="tabpanel" 
         aria-labelledby="heading<%= sparql_query.id %>"
       >
@@ -118,4 +131,7 @@
     <% end %>
   </div>
 </div>
+
+<br>
+<br>
 

@@ -27,7 +27,7 @@ class SparqlEndpointsController < ApplicationController
   # POST /sparql_endpoints.json
   def create
     @sparql_endpoint = SparqlEndpoint.new(sparql_endpoint_params)
-    @sparql_endpoint.user_id = current_user.id
+    @sparql_endpoint.user = current_user
 
     respond_to do |format|
       if @sparql_endpoint.save

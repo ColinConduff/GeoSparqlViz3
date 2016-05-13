@@ -1,6 +1,6 @@
 class SparqlEndpoint < ActiveRecord::Base
-	validates :name, presence: true
-	validates :endpoint, presence: true, endpoint: true
+	validates :name, presence: true, length: {minimum: 3, maximum: 100}
+	validates :endpoint, presence: true, endpoint: true, length: {minimum: 10, maximum: 150}
 
 	has_many :sparqlQueries, inverse_of: :sparqlEndpoint
 
