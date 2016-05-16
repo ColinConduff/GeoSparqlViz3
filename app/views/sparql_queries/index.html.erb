@@ -164,7 +164,11 @@
                   <small>
                     Created By: 
                     <span  id="userEmail">
+                      <% if sparql_query.user %>
                       <%= sparql_query.user.email %>
+                      <% else %>
+                      Deactivated User
+                      <% end %>
                     </span>
                   </small>
                 </div>
