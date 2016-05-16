@@ -78,5 +78,5 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Devise mailer stuff !!!!!!!!!!!!!!!! may need to change host and port !!!!!!!!!!!
-  config.action_mailer.default_url_options = { host: 'usgs-ybother.srv.mst.edu', port: 8080}
+  config.action_mailer.default_url_options = { host: 'usgs-ybother.srv.mst.edu' }
 end
