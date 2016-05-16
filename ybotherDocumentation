@@ -1,0 +1,41 @@
+
+This is the path to fuseki
+/home/cconduff/apache-jena-fuseki-2.3.1
+
+This is the path to the development folder for the application
+/home/cconduff/Development/GeoSparqlViz3
+
+This is the path to the production folder for the application
+/RAID/CEGIS_Datasets/ontology/code/SemanticNationalMap/geosparql
+
+useful commands for production app/folder:
+	// to get the latest version from github
+	git pull 
+
+	// precompile the code
+	RAILS_ENV=production bundle exec rake assets:precompile
+
+	// restart the apache server
+	// ask Jeff Wendel for help if this doesn't work 
+	sudo systemctl restart httpd
+
+
+
+There are several other folders under /SemanticNationalMap
+geosparqlVERSION2, geosparqlviz, NewGeoSparqlViz, sparqlparty
+
+sparqlparty was version 2 of the application
+It uses ruby on rails
+
+geosparqlviz was David Mattli's original version of the application
+It uses an older version of Django
+
+NewGeoSparqlViz was an updated version of Django
+I think that it is also the location of the production version 
+although that may be geosparqlVERSION2
+
+
+
+If a student contractor is reading this:
+ask Jeff Wendel or Brian Kawano if you need help 
+with Apache, Phusion Passenger, etc.  
