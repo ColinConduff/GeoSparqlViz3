@@ -185,6 +185,7 @@ function createClickSubmitQueryEvent(currentSparqlObject, nextSparqlObject, quer
   //     queryName: undefined,
   //     originalQuery: undefined,
   //     cleanedQuery: undefined,
+  //     codeMirrorQuery: undefined,
   //     endpointName: undefined,
   //     endpoint: undefined,
   //     menuSelector: undefined,
@@ -233,6 +234,35 @@ function baseQueryRequest(endpoint, query, ifSuccessfulDoThis)
     alert( "Request Failed: " + textStatus);
     alert(errorThrown + ": " + jqXHR.responseText);
   });
+}
+
+// this function replaces the bracket statements in the 
+// query that will be displayed using code mirrors on data tabs.
+// This function is very similar to the 
+// getCleanQueryWithoutBracketStatements function below (Not very DRY). 
+// Consider refactoring the next two functions.  
+function processCodeMirrorQuery(sparqlObject) {
+
+  var tempQueryString = sparqlObject.codeMirrorQuery;
+
+  for(var j = 0; j < sparqlObject.nodes.length; j++) {
+    if(sparqlObject.nodes[j].domType === 'data') {
+      tempQueryString = tempQueryString.replace(sparqlObject.nodes[j].substring, sparqlObject.nodes[j].dataToInsert);
+    
+    } else if(sparqlObject.nodes[j].domType === 'dropdown') {
+      tempQueryString = tempQueryString.replace(sparqlObject.nodes[j].substring, sparqlObject.nodes[j].dataToInsert);
+    
+    } else if(sparqlObject.nodes[j].domType === 'radio') {
+      var dataToInsertFromRadioGroup = $('#'+sparqlObject.nodes[j].menuSelectorID+" input:radio:checked").val();
+      tempQueryString = tempQueryString.replace(sparqlObject.nodes[j].substring, dataToInsertFromTextBox);
+
+    } else if(sparqlObject.nodes[j].domType === 'text') {
+      var dataToInsertFromTextBox = $('#'+sparqlObject.nodes[j].menuSelectorID).val();
+      tempQueryString = tempQueryString.replace(sparqlObject.nodes[j].substring, dataToInsertFromTextBox);
+    }
+  }
+
+  sparqlObject.codeMirrorQuery = tempQueryString;
 }
 
 function getCleanQueryWithoutBracketStatements(sparqlObject) {
@@ -312,7 +342,7 @@ function addNavTab(sObj, msg) {
   navPanel += '<div class="panel panel-default">';
   navPanel +=   '<div class="panel-heading text-center">'+sObj.queryName+'</div>';
   navPanel +=   '<div class="panel-body">';
-  navPanel +=     '<textarea id="'+codeMirrorAreaID+'">'+sObj.cleanedQuery+'</textarea>';
+  navPanel +=     '<textarea id="'+codeMirrorAreaID+'">'+sObj.codeMirrorQuery+'</textarea>';
   navPanel +=     '<h5 class="text-center">Sparql Endpoint: '+sObj.endpoint+'</h5>';
   navPanel +=   '</div>';
   navPanel +=   '<table class="table">';
@@ -394,6 +424,7 @@ var contains = function(needle) {
 function submitQuery(currentSparqlObject, nextSparqlObject, queryResponses) {
 
     getCleanQueryWithoutBracketStatements(currentSparqlObject);
+    processCodeMirrorQuery(currentSparqlObject);
     // check syntax
 
     function ifSuccessfulDoThis(msg) { 

@@ -77,6 +77,6 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  # Devise mailer stuff !!!!!!!!!!!!!!!! may need to change host and port !!!!!!!!!!!
+  # Devise mailer stuff 
   config.action_mailer.default_url_options = { host: 'usgs-ybother.srv.mst.edu' }
 end
