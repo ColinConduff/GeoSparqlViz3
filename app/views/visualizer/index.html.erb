@@ -71,6 +71,7 @@ var ready = function() {
       queryName: '<%= sparql_query.name %>',
       originalQuery: '<%= j sparql_query.query.squish.html_safe %>',
       cleanedQuery: undefined,
+      queryWithNewlineCharacters: '<%= j sparql_query.query %>',
       codeMirrorQuery: '<%= j sparql_query.query %>',
       endpointName: '<%= j sparql_query.sparqlEndpoint.name %>',
       endpoint: '<%= j sparql_query.sparqlEndpoint.endpoint %>',

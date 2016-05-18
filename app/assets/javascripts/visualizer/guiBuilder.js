@@ -185,6 +185,7 @@ function createClickSubmitQueryEvent(currentSparqlObject, nextSparqlObject, quer
   //     queryName: undefined,
   //     originalQuery: undefined,
   //     cleanedQuery: undefined,
+  //     queryWithNewlineCharacters: undefined,
   //     codeMirrorQuery: undefined,
   //     endpointName: undefined,
   //     endpoint: undefined,
@@ -243,7 +244,7 @@ function baseQueryRequest(endpoint, query, ifSuccessfulDoThis)
 // Consider refactoring the next two functions.  
 function processCodeMirrorQuery(sparqlObject) {
 
-  var tempQueryString = sparqlObject.codeMirrorQuery;
+  var tempQueryString = sparqlObject.queryWithNewlineCharacters;
 
   for(var j = 0; j < sparqlObject.nodes.length; j++) {
     if(sparqlObject.nodes[j].domType === 'data') {
@@ -327,6 +328,8 @@ function addNavTab(sObj, msg) {
   var codeMirrorAreaID = 'codeMirrorAreaID'+globalIDCounter;
   var navListTab = 'navTabLi'+globalIDCounter;
   globalIDCounter++;
+  
+  //console.log("sObj.codeMirrorQuery " + sObj.codeMirrorQuery);
 
   sObj.navListTabID = navListTab;
   var navULselector = '#navTabUL';
