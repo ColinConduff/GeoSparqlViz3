@@ -37,6 +37,7 @@ var ready = function() {
 
   // this is an example of what the sparqlObjects object ends up
   // looking like after data is added to it throughout the guiBuilder.js process
+  // For more documentation see app/assets/javascripts/visualizer/guiBuilder.js
 
   // var sparqlObjects = [
   //   {
@@ -78,6 +79,7 @@ var ready = function() {
       menuSelector: '#menu',
       menuGroupSelector: 'menuGroup'+menuGroupSelectorID,
       submitBtnSelector: 'btn'+menuGroupSelectorID,
+      navListTabID: [],
       nodes: []
     }
 
@@ -94,6 +96,7 @@ var ready = function() {
   // remove all of the nav tabs that build up above the map
   $('#removeAllTabsBtn').click(function () { 
     removeAllDataTabs(sparqlObjects); 
+    jQuery('#mapTabID')[0].click(); // navigate back to map tab
   });
 }
 

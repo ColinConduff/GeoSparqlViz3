@@ -250,7 +250,9 @@ function addDataToDropdown(sparqlObject, queryResponses) {
 
 function removeAllDataTabs(sparqlObjects) {
   for(var i = 0; i < sparqlObjects.length; i++) {
-    $('#'+sparqlObjects[i].navListTabID).hide();
+    for(var j = 0; j < sparqlObjects[i].navListTabID.length; j++) {
+      $('#'+sparqlObjects[i].navListTabID[j]).hide();
+    }
   }
 }
 
@@ -261,7 +263,7 @@ function addNavTab(sObj, msg) {
   var navListTab = 'navTabLi'+globalIDCounter;
   globalIDCounter++;
 
-  sObj.navListTabID = navListTab;
+  sObj.navListTabID.push(navListTab);
   var navULselector = '#navTabUL';
   var navTabPanelDivSelector = '#navTabPanelDiv';
 
