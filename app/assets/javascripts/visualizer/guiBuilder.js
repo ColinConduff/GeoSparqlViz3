@@ -60,7 +60,7 @@ function addNodesToQueryObject(sObj) {
             menuSelectorID: undefined, 
             substring: sObj.originalQuery.substring(i, j+2),
             domType: undefined,
-            parsedArguments: sObj.originalQuery.substring(i+2, j-1).trim().split(" ")
+            parsedArguments: sObj.originalQuery.substring(i+2, j-1).trim().split(", ")
           };
           
           addMenuSelectorIDAndDomTypeToNode(node);
