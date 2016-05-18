@@ -118,6 +118,68 @@ class SparqlQueriesController < ApplicationController
     end
   end
 
+  def clone 
+    # includes root query
+    @original_queries = find_all_child_queries(params[:id])
+
+    # Used for redirect on fail
+    @original_root_query = SparqlQuery.find(params[:id])
+
+    @failure_message = 'Failed to clone sparql query because of the following: '
+
+    # Create a new root query
+    @new_root_query = SparqlQuery.new(
+      user: current_user,
+      name: @original_queries.first.name + " Duplicate", 
+      query: @original_queries.first.query,
+      sparqlEndpoint: @original_queries.first.sparqlEndpoint
+    )
+
+    # If the new root query fails to save 
+    # redirect to the original root query
+    if @new_root_query.save
+      @clone_successful = true
+
+      # Skip the first query when cloning the queries 
+      # in the original queries array
+      @previous_query = @new_root_query
+      @original_queries.drop(1).each do |original_query|
+        @new_query = SparqlQuery.new(
+          user: current_user,
+          name: original_query.name + " Duplicate", 
+          query: original_query.query,
+          sparqlEndpoint: original_query.sparqlEndpoint,
+          parentQuery: @previous_query
+        )
+        if not @new_query.save
+          @failure_message = @failure_message + ', failed to create a query named [' + original_query.name + ']'
+          @clone_successful = false
+          break
+        end
+
+        @previous_query = @new_query
+      end
+    else 
+      @clone_successful = false
+      @failure_message = @failure_message + 'failed to create a new root query'
+    end
+
+    # used for new query form
+    @sparql_query = SparqlQuery.new
+    @sparql_endpoint = SparqlEndpoint.new
+    @sparql_endpoints = SparqlEndpoint.joins(:user).where('user_id = ?', current_user)
+
+    respond_to do |format|
+      if @clone_successful
+        format.html { redirect_to @new_root_query, notice: 'The sparql query was successfully cloned.' } 
+        format.json { head :no_content }
+      else 
+        format.html { redirect_to @original_root_query, alert: @failure_message}
+        format.json { render json: @sparql_query.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_sparql_query

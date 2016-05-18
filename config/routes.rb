@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
   
   get '/visualizer/:id' => 'visualizer#index', as: :visualizer
+  get '/sparql_queries/:id/clone' => 'sparql_queries#clone', as: :clone_query
   
   # Example resource route (maps HTTP verbs to controller actions automatically):
   resources :sparql_endpoints, controller: 'sparql_endpoints'
