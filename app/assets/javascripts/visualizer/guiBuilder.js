@@ -2,30 +2,47 @@
 // This code is used to build the GUI in views/visualizer/index.html.erb
 // The buildMenu function below is the entry point from the visualizer
 
-// Consider using a library like sparqljs to check the syntax of sparql queries
-// before they are submitted in the submitQuery function
+// example of sparqlObjects object
+// var sparqlObjects = [
+//  {
+//    queryName: undefined,
+//    originalQuery: undefined,              // newline characters removed
+//    cleanedQuery: undefined,               // bracket statements replaced
+//    queryWithNewlineCharacters: undefined, // contains newline characters
+//    codeMirrorQuery: undefined,            // bracket statements replaced, preserves newline characters
+//    endpointName: undefined,
+//    endpoint: undefined,
+//    menuSelector: undefined,               // CSS selector, #menu, attach point for menu groups
+//    menuGroupSelector: undefined,          // CSS selector, group related to one query
+//    submitBtnSelector: undefined,          // CSS selector for submit button in menu group
+//    nodes : [                        // each node is a bracket statement
+//      {
+//        menuSelectorID: undefined,   // CSS selector for node DOM element (dropdown menu, etc)
+//        substring: undefined,        // string containing bracket statement, makes it easier to replace with data later
+//        domType: undefined,          // text, dropdown, data, radio
+//        parsedArguments: undefined,  // list of words in one bracket statement
+//        dataToInsert: undefined      // data from query response to replace bracket statement with
+//      }
+//    ]
+//  }
+// ];
 
-var globalIDCounter = 0; // prevent naming collisions for menu ids
-function addMenuSelectorIDAndDomTypeToNode(node) {
-  
-  if(node.parsedArguments[0] === "text") {
-    node.menuSelectorID = 'text'+ globalIDCounter;
-    node.domType = 'text';
+// prevent naming collisions for menu ids
+// used throughout the functions in this file
+var globalIDCounter = 0; 
 
-  } else if (node.parsedArguments[0] === "dropdown") {
-    node.menuSelectorID = 'dropdown'+ globalIDCounter;;
-    node.domType = 'dropdown';
+function buildMenu(sparqlObjects, queryResponses) {
 
-  } else if (node.parsedArguments[0] === "radio") {
-    node.menuSelectorID = 'radio'+ globalIDCounter;
-    node.domType = 'radio';
-      
-  } else if (node.parsedArguments[0] === "data") {
-    node.menuSelectorID = 'data'+ globalIDCounter;
-    node.domType = 'data';
-
+  for(var m = 0; m < sparqlObjects.length; m++) {
+    addNodesToQueryObject(sparqlObjects[m]);
+    createHTMLElements(sparqlObjects[m]);
+    
+    var nextSparqlObject = undefined;
+    if(m + 1 < sparqlObjects.length) {
+      var nextSparqlObject = sparqlObjects[m+1];
+    } 
+    createClickSubmitQueryEvent(sparqlObjects[m], nextSparqlObject, queryResponses);
   }
-  globalIDCounter++;
 }
 
 function addNodesToQueryObject(sObj) {
@@ -58,6 +75,28 @@ function addNodesToQueryObject(sObj) {
       }
     }
   }
+}
+
+function addMenuSelectorIDAndDomTypeToNode(node) {
+  
+  if(node.parsedArguments[0] === "text") {
+    node.menuSelectorID = 'text'+ globalIDCounter;
+    node.domType = 'text';
+
+  } else if (node.parsedArguments[0] === "dropdown") {
+    node.menuSelectorID = 'dropdown'+ globalIDCounter;
+    node.domType = 'dropdown';
+
+  } else if (node.parsedArguments[0] === "radio") {
+    node.menuSelectorID = 'radio'+ globalIDCounter;
+    node.domType = 'radio';
+      
+  } else if (node.parsedArguments[0] === "data") {
+    node.menuSelectorID = 'data'+ globalIDCounter;
+    node.domType = 'data';
+
+  }
+  globalIDCounter++;
 }
 
 function createHTMLElements(sObj) {
@@ -132,7 +171,7 @@ function createHTMLElements(sObj) {
       globalIDCounter++;
 
       // the li elements for the dropdown menu are populated after 
-      // a previous query has been submitted, see the function addDataToDropdown below
+      // a previous query has been submitted, see the function addDataToDropdown 
       var data = '<div class="dropdown" id="'+ node.menuSelectorID +'">';
       data +=      '<button class="btn btn-default btn-block dropdown-toggle" type="button" id="'+ node.menuSelectorID +'temp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">';
       data +=        '<div class="row">';
@@ -179,106 +218,6 @@ function createClickSubmitQueryEvent(currentSparqlObject, nextSparqlObject, quer
   }());
 }
 
- // example of sparqlObjects object
- // var sparqlObjects = [
-  //   {
-  //     queryName: undefined,
-  //     originalQuery: undefined,
-  //     cleanedQuery: undefined,
-  //     queryWithNewlineCharacters: undefined,
-  //     codeMirrorQuery: undefined,
-  //     endpointName: undefined,
-  //     endpoint: undefined,
-  //     menuSelector: undefined,
-  //     menuGroupSelector: undefined,
-  //     submitBtnSelector: undefined,
-  //     nodes : [
-  //       {
-  //         menuSelectorID: undefined,
-  //         substring: undefined,
-  //         domType: undefined,
-  //         parsedArguments: undefined,
-  //         dataToInsert: undefined
-  //       }
-  //     ]
-  //   }
-  // ];
-function buildMenu(sparqlObjects, queryResponses) {
-
-  for(var m = 0; m < sparqlObjects.length; m++) {
-    addNodesToQueryObject(sparqlObjects[m]);
-    createHTMLElements(sparqlObjects[m]);
-    
-    var nextSparqlObject = undefined;
-    if(m + 1 < sparqlObjects.length) {
-      var nextSparqlObject = sparqlObjects[m+1];
-    } 
-    createClickSubmitQueryEvent(sparqlObjects[m], nextSparqlObject, queryResponses);
-  }
-}
-
-function baseQueryRequest(endpoint, query, ifSuccessfulDoThis)
-{
-  var request = $.ajax({
-    type: "GET",
-    url: endpoint,
-    dataType: "json",
-    data: {
-      "query": query,
-      "output": "json"
-    }
-  });
-  
-  request.done(ifSuccessfulDoThis);
-  
-  request.fail(function(jqXHR, textStatus, errorThrown) {
-    alert( "Request Failed: " + textStatus);
-    alert(errorThrown + ": " + jqXHR.responseText);
-  });
-}
-
-function removeBracketStatementsFromQueryString(queryString, sparqlObject) {
-
-  for(var j = 0; j < sparqlObject.nodes.length; j++) {
-    if(sparqlObject.nodes[j].domType === 'data') {
-      queryString = queryString.replace(sparqlObject.nodes[j].substring, sparqlObject.nodes[j].dataToInsert);
-    
-    } else if(sparqlObject.nodes[j].domType === 'dropdown') {
-      queryString = queryString.replace(sparqlObject.nodes[j].substring, sparqlObject.nodes[j].dataToInsert);
-    
-    } else if(sparqlObject.nodes[j].domType === 'radio') {
-      var dataToInsertFromRadioGroup = $('#'+sparqlObject.nodes[j].menuSelectorID+" input:radio:checked").val();
-      queryString = queryString.replace(sparqlObject.nodes[j].substring, dataToInsertFromTextBox);
-
-    } else if(sparqlObject.nodes[j].domType === 'text') {
-      var dataToInsertFromTextBox = $('#'+sparqlObject.nodes[j].menuSelectorID).val();
-      queryString = queryString.replace(sparqlObject.nodes[j].substring, dataToInsertFromTextBox);
-    }
-  }
-
-  return queryString;
-}
-
-// this function replaces the bracket statements in the 
-// query that will be displayed on data tabs using code mirrors.
-function processCodeMirrorQuery(sparqlObject) {
-
-  var tempQueryString = sparqlObject.queryWithNewlineCharacters;
-
-  tempQueryString = removeBracketStatementsFromQueryString(tempQueryString, sparqlObject);
-
-  sparqlObject.codeMirrorQuery = tempQueryString;
-}
-
-function getCleanQueryWithoutBracketStatements(sparqlObject) {
-  
-  var tempQueryString = sparqlObject.originalQuery;
-
-  tempQueryString = removeBracketStatementsFromQueryString(tempQueryString, sparqlObject);
-
-  sparqlObject.cleanedQuery = tempQueryString;
-}
-
 function addDataToDropdown(sparqlObject, queryResponses) {
   
   // iterate over all of the nodes in the sparql object
@@ -305,6 +244,10 @@ function addDataToDropdown(sparqlObject, queryResponses) {
   }
 }
 
+/////////////////////////////////////////////////////////////////////////////
+// The following functions are involved in creating the data tabs ///////////
+/////////////////////////////////////////////////////////////////////////////
+
 function removeAllDataTabs(sparqlObjects) {
   for(var i = 0; i < sparqlObjects.length; i++) {
     $('#'+sparqlObjects[i].navListTabID).hide();
@@ -317,8 +260,6 @@ function addNavTab(sObj, msg) {
   var codeMirrorAreaID = 'codeMirrorAreaID'+globalIDCounter;
   var navListTab = 'navTabLi'+globalIDCounter;
   globalIDCounter++;
-  
-  //console.log("sObj.codeMirrorQuery " + sObj.codeMirrorQuery);
 
   sObj.navListTabID = navListTab;
   var navULselector = '#navTabUL';
@@ -388,6 +329,72 @@ var initCodeMirror = function(codeMirrorAreaID) {
   });
 };
 
+//////////////////////////////////////////////////////////////////////////////
+// The below functions are involved in submitting the query //////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+function baseQueryRequest(endpoint, query, ifSuccessfulDoThis)
+{
+  var request = $.ajax({
+    type: "GET",
+    url: endpoint,
+    dataType: "json",
+    data: {
+      "query": query,
+      "output": "json"
+    }
+  });
+  
+  request.done(ifSuccessfulDoThis);
+  
+  request.fail(function(jqXHR, textStatus, errorThrown) {
+    alert( "Request Failed: " + textStatus);
+    alert(errorThrown + ": " + jqXHR.responseText);
+  });
+}
+
+function removeBracketStatementsFromQueryString(queryString, sparqlObject) {
+
+  for(var j = 0; j < sparqlObject.nodes.length; j++) {
+    if(sparqlObject.nodes[j].domType === 'data') {
+      queryString = queryString.replace(sparqlObject.nodes[j].substring, sparqlObject.nodes[j].dataToInsert);
+    
+    } else if(sparqlObject.nodes[j].domType === 'dropdown') {
+      queryString = queryString.replace(sparqlObject.nodes[j].substring, sparqlObject.nodes[j].dataToInsert);
+    
+    } else if(sparqlObject.nodes[j].domType === 'radio') {
+      var dataToInsertFromRadioGroup = $('#'+sparqlObject.nodes[j].menuSelectorID+" input:radio:checked").val();
+      queryString = queryString.replace(sparqlObject.nodes[j].substring, dataToInsertFromTextBox);
+
+    } else if(sparqlObject.nodes[j].domType === 'text') {
+      var dataToInsertFromTextBox = $('#'+sparqlObject.nodes[j].menuSelectorID).val();
+      queryString = queryString.replace(sparqlObject.nodes[j].substring, dataToInsertFromTextBox);
+    }
+  }
+
+  return queryString;
+}
+
+// this function replaces the bracket statements in the 
+// query that will be displayed on data tabs using code mirrors.
+function processCodeMirrorQuery(sparqlObject) {
+
+  var tempQueryString = sparqlObject.queryWithNewlineCharacters;
+
+  tempQueryString = removeBracketStatementsFromQueryString(tempQueryString, sparqlObject);
+
+  sparqlObject.codeMirrorQuery = tempQueryString;
+}
+
+function processQueryForSubmission(sparqlObject) {
+  
+  var tempQueryString = sparqlObject.originalQuery;
+
+  tempQueryString = removeBracketStatementsFromQueryString(tempQueryString, sparqlObject);
+
+  sparqlObject.cleanedQuery = tempQueryString;
+}
+
 // used to check if a query response contains wkt data
 var contains = function(needle) {
   // Per spec, the way to identify NaN is that it is not equal to itself
@@ -415,9 +422,11 @@ var contains = function(needle) {
 
 function submitQuery(currentSparqlObject, nextSparqlObject, queryResponses) {
 
-    getCleanQueryWithoutBracketStatements(currentSparqlObject);
+    processQueryForSubmission(currentSparqlObject);
     processCodeMirrorQuery(currentSparqlObject);
-    // check syntax
+
+    // Consider using a library like sparqljs to check the syntax of sparql queries
+    // before they are submitted in the submitQuery function
 
     function ifSuccessfulDoThis(msg) { 
       queryResponses.push(msg);
