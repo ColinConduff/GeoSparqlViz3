@@ -127,12 +127,26 @@ class SparqlQueriesController < ApplicationController
 
     @failure_message = 'Failed to clone sparql query because of the following: '
 
+    # If the user doesn't have the endpoint already, create a new one for them
+    @first_endpoint = SparqlEndpoint.joins(:user).where(
+      'user_id = ? AND endpoint = ?', 
+      current_user, 
+      @original_queries.first.sparqlEndpoint.endpoint
+      ).first
+
+    if not @first_endpoint
+      @first_endpoint = SparqlEndpoint.create(
+                 name: @original_queries.first.sparqlEndpoint.name,
+                 endpoint: @original_queries.first.sparqlEndpoint.endpoint,
+                 user: current_user)
+    end
+
     # Create a new root query
     @new_root_query = SparqlQuery.new(
       user: current_user,
       name: @original_queries.first.name + " Duplicate", 
       query: @original_queries.first.query,
-      sparqlEndpoint: @original_queries.first.sparqlEndpoint
+      sparqlEndpoint: @first_endpoint
     )
 
     # If the new root query fails to save 
@@ -144,11 +158,24 @@ class SparqlQueriesController < ApplicationController
       # in the original queries array
       @previous_query = @new_root_query
       @original_queries.drop(1).each do |original_query|
+        # If the user doesn't have the endpoint already, create a new one for them
+        @endpoint = SparqlEndpoint.joins(:user)
+                         .where('user_id = ? AND endpoint = ?', 
+                                current_user, 
+                                original_query.sparqlEndpoint.endpoint).first
+
+        if not @endpoint
+          @endpoint = SparqlEndpoint.create(
+                     name: original_query.sparqlEndpoint.name,
+                     endpoint: original_query.sparqlEndpoint.endpoint,
+                     user: current_user)
+        end
+
         @new_query = SparqlQuery.new(
           user: current_user,
           name: original_query.name + " Duplicate", 
           query: original_query.query,
-          sparqlEndpoint: original_query.sparqlEndpoint,
+          sparqlEndpoint: @endpoint,
           parentQuery: @previous_query
         )
         if not @new_query.save
