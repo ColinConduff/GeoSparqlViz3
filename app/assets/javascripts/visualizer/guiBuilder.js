@@ -237,31 +237,35 @@ function baseQueryRequest(endpoint, query, ifSuccessfulDoThis)
   });
 }
 
+function removeBracketStatementsFromQueryString(queryString, sparqlObject) {
+
+  for(var j = 0; j < sparqlObject.nodes.length; j++) {
+    if(sparqlObject.nodes[j].domType === 'data') {
+      queryString = queryString.replace(sparqlObject.nodes[j].substring, sparqlObject.nodes[j].dataToInsert);
+    
+    } else if(sparqlObject.nodes[j].domType === 'dropdown') {
+      queryString = queryString.replace(sparqlObject.nodes[j].substring, sparqlObject.nodes[j].dataToInsert);
+    
+    } else if(sparqlObject.nodes[j].domType === 'radio') {
+      var dataToInsertFromRadioGroup = $('#'+sparqlObject.nodes[j].menuSelectorID+" input:radio:checked").val();
+      queryString = queryString.replace(sparqlObject.nodes[j].substring, dataToInsertFromTextBox);
+
+    } else if(sparqlObject.nodes[j].domType === 'text') {
+      var dataToInsertFromTextBox = $('#'+sparqlObject.nodes[j].menuSelectorID).val();
+      queryString = queryString.replace(sparqlObject.nodes[j].substring, dataToInsertFromTextBox);
+    }
+  }
+
+  return queryString;
+}
+
 // this function replaces the bracket statements in the 
-// query that will be displayed using code mirrors on data tabs.
-// This function is very similar to the 
-// getCleanQueryWithoutBracketStatements function below (Not very DRY). 
-// Consider refactoring the next two functions.  
+// query that will be displayed on data tabs using code mirrors.
 function processCodeMirrorQuery(sparqlObject) {
 
   var tempQueryString = sparqlObject.queryWithNewlineCharacters;
 
-  for(var j = 0; j < sparqlObject.nodes.length; j++) {
-    if(sparqlObject.nodes[j].domType === 'data') {
-      tempQueryString = tempQueryString.replace(sparqlObject.nodes[j].substring, sparqlObject.nodes[j].dataToInsert);
-    
-    } else if(sparqlObject.nodes[j].domType === 'dropdown') {
-      tempQueryString = tempQueryString.replace(sparqlObject.nodes[j].substring, sparqlObject.nodes[j].dataToInsert);
-    
-    } else if(sparqlObject.nodes[j].domType === 'radio') {
-      var dataToInsertFromRadioGroup = $('#'+sparqlObject.nodes[j].menuSelectorID+" input:radio:checked").val();
-      tempQueryString = tempQueryString.replace(sparqlObject.nodes[j].substring, dataToInsertFromTextBox);
-
-    } else if(sparqlObject.nodes[j].domType === 'text') {
-      var dataToInsertFromTextBox = $('#'+sparqlObject.nodes[j].menuSelectorID).val();
-      tempQueryString = tempQueryString.replace(sparqlObject.nodes[j].substring, dataToInsertFromTextBox);
-    }
-  }
+  tempQueryString = removeBracketStatementsFromQueryString(tempQueryString, sparqlObject);
 
   sparqlObject.codeMirrorQuery = tempQueryString;
 }
@@ -269,23 +273,8 @@ function processCodeMirrorQuery(sparqlObject) {
 function getCleanQueryWithoutBracketStatements(sparqlObject) {
   
   var tempQueryString = sparqlObject.originalQuery;
-  
-  for(var j = 0; j < sparqlObject.nodes.length; j++) {
-    if(sparqlObject.nodes[j].domType === 'data') {
-      tempQueryString = tempQueryString.replace(sparqlObject.nodes[j].substring, sparqlObject.nodes[j].dataToInsert);
-    
-    } else if(sparqlObject.nodes[j].domType === 'dropdown') {
-      tempQueryString = tempQueryString.replace(sparqlObject.nodes[j].substring, sparqlObject.nodes[j].dataToInsert);
-    
-    } else if(sparqlObject.nodes[j].domType === 'radio') {
-      var dataToInsertFromRadioGroup = $('#'+sparqlObject.nodes[j].menuSelectorID+" input:radio:checked").val();
-      tempQueryString = tempQueryString.replace(sparqlObject.nodes[j].substring, dataToInsertFromTextBox);
 
-    } else if(sparqlObject.nodes[j].domType === 'text') {
-      var dataToInsertFromTextBox = $('#'+sparqlObject.nodes[j].menuSelectorID).val();
-      tempQueryString = tempQueryString.replace(sparqlObject.nodes[j].substring, dataToInsertFromTextBox);
-    }
-  }
+  tempQueryString = removeBracketStatementsFromQueryString(tempQueryString, sparqlObject);
 
   sparqlObject.cleanedQuery = tempQueryString;
 }
