@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   
   get '/visualizer/:id' => 'visualizer#index', as: :visualizer
   get '/sparql_queries/:id/clone' => 'sparql_queries#clone', as: :clone_query
+  get '/sparql_queries/:id/syntax_check' => 'sparql_queries#syntax_check', as: :syntax_check
   
   # Example resource route (maps HTTP verbs to controller actions automatically):
   resources :sparql_endpoints, controller: 'sparql_endpoints'

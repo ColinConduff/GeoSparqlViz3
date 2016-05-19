@@ -55,3 +55,5 @@ gem 'bootstrap_form'
 #gem 'jquery-turbolinks'
 
 gem 'will_paginate'
+
+gem 'sparql', '~> 2.0'

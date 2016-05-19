@@ -1,6 +1,7 @@
 class SparqlQueriesController < ApplicationController
   before_action :authenticate_user!, only: [:new, :edit, :create, :update, :destroy]
   before_action :set_sparql_query, only: [:edit, :update, :destroy]
+  add_flash_types :query_checked, :syntax_error_message, :no_errors_found_message
 
   # GET /sparql_queries
   # GET /sparql_queries.json
@@ -118,6 +119,62 @@ class SparqlQueriesController < ApplicationController
     end
   end
 
+  # Dependencies for the syntax_check function
+  require 'rubygems'
+  require 'sparql'
+
+  # Checks the syntax of a sparql query using 
+  # Uses the sparql gem. Documentation at:
+  # http://www.rubydoc.info/github/ruby-rdf/sparql/frames
+  def syntax_check
+    @query_to_check = SparqlQuery.find(params[:id])
+
+    # Replace bracket statements with something that will not 
+    # throw errors when checking the syntax of the query
+    query_without_bracket_statements = @query_to_check.query.gsub(/\[\[.*\]\]/, 'ignoreThis')
+
+    # If the parse function finds a syntax error
+    # it is stored in @error_message
+    begin 
+      # The following function parses the query into SSE (abstract query algebra)
+      # however it is only being used to find syntax errors
+      sse = SPARQL.parse(query_without_bracket_statements)
+    rescue => e
+      @error_message = e.message
+    else 
+      @error_message = nil 
+    end 
+
+    # redirect to the root sparql_query
+    @redirect_target = set_redirect_target(@query_to_check)
+
+    # used for new query form
+    @sparql_query = SparqlQuery.new
+    @sparql_endpoint = SparqlEndpoint.new
+    @sparql_endpoints = SparqlEndpoint.joins(:user).where('user_id = ?', current_user)
+
+    respond_to do |format|
+      if !@error_message
+        format.html { 
+          redirect_to @redirect_target, 
+          query_checked: @query_to_check.id, # Used to find the query again in the view
+          no_errors_found_message: 'No errors were found' 
+        } 
+        format.json { head :no_content }
+      else
+        format.html { 
+          redirect_to @redirect_target, 
+          query_checked: @query_to_check.id, 
+          syntax_error_message: @error_message 
+        } 
+        format.json { head :no_content }
+      end
+    end
+  end
+
+  # Duplicates a sparql query
+  # May create a new sparql endpoint if the target user does not already
+  # have the associated endpoint
   def clone 
     # includes root query
     @original_queries = find_all_child_queries(params[:id])
