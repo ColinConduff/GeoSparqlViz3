@@ -88,26 +88,18 @@
                       <%= f.collection_select(:sparql_endpoint_id, @sparql_endpoints, :id, :name, {prompt: "Select a sparql endpoint"}) %>
                     </div>
 
-                    <div class="form-actions">
-                      <input name="commit" value="Save" type="submit" class="btn btn-default btn-block btn-primary">
+                    <div class="col-xs-12 col-sm-10">
+                      <div class="form-actions">
+                        <input name="commit" value="Save" type="submit" class="btn btn-default btn-block btn-primary">
+                      </div>
                     </div>
                   <% end %>
 
-                  <div class="row">
-                    <div class="col-xs-6 col-sm-6">
-                      <%= link_to syntax_check_url(id: sparql_query.id) do %>
-                        <button class="btn btn-info btn-block">
-                          Check for Errors
-                        </button>
-                      <% end %>
-                    </div>
-
-                    <div class="col-xs-6 col-sm-6">
+                    <div class="col-xs-12 col-sm-2">
                       <%= link_to sparql_query, method: :delete, data: { confirm: 'Are you sure?' } do %>
                         <button class="btn btn-danger btn-block">Delete!</button>
                       <% end %>
                     </div>
-                  </div>
                 </div>
                 
                 <!-- 
