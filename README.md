@@ -3,7 +3,7 @@
 == [GeoSparqlViz3](http://usgs-ybother.srv.mst.edu/geosparql/)
 
 === Overview
- * Visualize and analyze linked geospatial data
+ * A Ruby on Rails web app for visualizing and analyzing linked geospatial data
  * Create sparql queries and sparql endpoints
  * Visualize Well-Known Text response data as map layers
  * Use and create graphical user interfaces for querying linked data 
