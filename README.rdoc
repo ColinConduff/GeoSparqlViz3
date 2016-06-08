@@ -1,6 +1,6 @@
 
 
-== [GeoSparqlViz3](http://usgs-ybother.srv.mst.edu/geosparql/)
+== GeoSparqlViz3 http://usgs-ybother.srv.mst.edu/geosparql/
 
 === Overview
  * A Ruby on Rails web app for visualizing and analyzing linked geospatial data
@@ -8,7 +8,8 @@
  * Visualize Well-Known Text response data as map layers
  * Use and create graphical user interfaces for querying linked data 
 
-===[wiki](https://github.com/ColinConduff/GeoSparqlViz3/wiki)
+===wiki https://github.com/ColinConduff/GeoSparqlViz3/wiki
+ * Screenshots and detailed explanation available in the wiki
 
 === Installation (Note: This is not necessary for users)
 
